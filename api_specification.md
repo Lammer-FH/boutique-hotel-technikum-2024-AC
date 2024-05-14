@@ -2,30 +2,27 @@
 
 We want to use a REST API and query parameters for Rooms and availability.
 We further want to use a POST request for potential booking requests. 
-Some additional static pages will be defined, may change in the future.
 
 ## Endpoint API
-•	**Rooms** (list of rooms)  
->parameter /rooms?=page=x  
->Availability /rooms?page=x&=start=y&end=z 
+### Rooms  
+```/rooms?page=1``` (Pagination)  
+```/rooms?page=1&start=2024-05-07&end=2024-05-15``` (Availability)   
+```/rooms/{id}``` (Specific Room)  
 
-•	**Rooms/ID** (specific Room)  
-•	**Contact** (static page)  
-•	**Information** (static page)  
-•	**Booking**  
->/bookings/{id} for confirmation API  
->/bookings -> POST     
+###	Bookings  
+```/bookings/{id}``` (Booking Confirmation)  
+```/bookings``` (POST, Create New Booking)     
 
 
 ```json
 {
-“roomId” : "",
-“startDate”: "",
-“endDate”: "",
-"firstname": "",
-"lastname": "",
-"email": "",
-"breakfast": "yes/no",
+    "roomId" : 123456,
+    "startDate": "2024-05-07",
+    "endDate": "2024-05-15",
+    "firstname": "Thomas",
+    "lastname": "Mustermann",
+    "email": "thomas.mustermann@gmail.com",
+    "breakfast": true
 }
 ```
 
