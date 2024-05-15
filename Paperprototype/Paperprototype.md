@@ -8,6 +8,8 @@ The components that could be used per page can be found below the image.
   
 # Landingpage
 
+- 'Book now!' button and tile leads to page 'Room Selection'
+
 ![Landingpage](img/Landingpage.png)
 
 Ioniq Components:
@@ -20,12 +22,6 @@ Footer is a root component of a page that aligns itself to the bottom of the pag
 Toolbars are generally positioned above or below content and provide content and actions for the current screen. When placed within the content, toolbars will scroll with the content. Toolbars can contain several different components including titles, buttons, icons, back buttons, menu buttons, searchbars, segments, progress bars, and more.
 - `<ion-button>`  
 The Buttons component is a container element. It should be used inside of a toolbar and can contain several types of buttons, including standard buttons, menu buttons, and back buttons.
-- `<ion-datetime-button>`  
-Datetime Button links with a Datetime component to display the formatted date and time. It also provides buttons to present the datetime in a modal, popover, and more.
-- `<ion-select :multiple="true">`  
-Selects are form controls to select an option, or options, from a set of options. When a user taps the select, a dialog appears with all of the options in a large, easy to select list. By adding the multiple attribute to select, users are able to select multiple options.
-- `<ion-list>`  
-Lists are made up of multiple rows of items which can contain text, buttons, toggles, icons, thumbnails, and much more. Lists generally contain items with similar data content, such as images and text.
 - `<ion-router>`  
 Apps should have a single ion-router component in the codebase. This component controls all interactions with the browser history and it aggregates updates through an event system.
 - `<ion-tabs>`  
@@ -39,10 +35,37 @@ Breadcrumbs are navigation items that are used to indicate where a user is on an
 
 <br><br><br><br><br><br>
 
+# Room Selection Page
+
+- (i) = Icon
+
+- Clicking on the room tile takes you to the 'Room Booking' page.
+
+- Clicking on the Administration button takes you to the 'Administration' page. We are not yet sure whether we really need Administration.
+
+- Optics/view is optimized for an odd number of rooms  
+<br>
+
+
+![Room Selection](img/Room-selection.png)
+
+- `<ion-datetime-button>`  
+Datetime Button links with a Datetime component to display the formatted date and time. It also provides buttons to present the datetime in a modal, popover, and more.
+- `<ion-select :multiple="true">`  
+Selects are form controls to select an option, or options, from a set of options. When a user taps the select, a dialog appears with all of the options in a large, easy to select list. By adding the multiple attribute to select, users are able to select multiple options.
+- `<ion-list>`  
+Lists are made up of multiple rows of items which can contain text, buttons, toggles, icons, thumbnails, and much more. Lists generally contain items with similar data content, such as images and text.
+
+<br><br><br><br><br><br>
+
 # Room Booking Page
 
+- The 'Confirm Booking' button opens a modal with a link to the reservation confirmation and forwards the user directly to it. It is also possible to edit the reservation in this window.
+
+- The 'Cancel' button takes the user back to Room Selection
 
 ![Room Booking](img/Room-booking.png)
+
 - `<ion-header>`    
 Header is a root component of a page that aligns itself to the top of the page. 
 Maybe for our title?
@@ -61,6 +84,8 @@ Tabs are a top level navigation component to implement a tab-based navigation. T
 <br><br><br><br><br><br>
 
 # Administration Page
+
+- We're not sure yet, but we probably won't need this page.
 
 ![Room Administration](img/Administration.png)
 - `<ion-header>`  
