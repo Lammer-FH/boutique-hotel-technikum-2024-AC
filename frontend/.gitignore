@@ -1,0 +1,16 @@
+.sublime-project
+.sublime-workspace
+
+### Ionic ###
+/.ionic
+/.sass-cache
+/.sourcemaps
+/.versions
+/coverage
+/platforms
+/plugins
+/www
+
+### VS Code ###
+/.vscode/*
+!/.vscode/extensions.json

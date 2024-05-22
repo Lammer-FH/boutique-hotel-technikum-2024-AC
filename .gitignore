@@ -1,0 +1,27 @@
+# General ignores
+*~
+*.sw[mnpcod]
+.tmp
+*.tmp
+*.tmp.*
+.DS_Store
+Thumbs.db
+UserInterfaceState.xcuserstate
+$RECYCLE.BIN/
+*.log
+log.txt
+npm-debug.log*
+
+### IDE Specific ###
+.idea
+*.iws
+*.iml
+*.ipr
+.vscode/
+
+# Node modules
+node_modules/
+
+# Build directories
+dist/
+build/
