@@ -15,8 +15,8 @@ public class RoomController {
     private RoomService roomService;
 
     @GetMapping
-    public List<RoomDTO> getAllRooms(@RequestParam(defaultValue = "2") int page,
-                                     @RequestParam(defaultValue = "1") int size) {
+    public List<RoomDTO> getAllRooms(@RequestParam(defaultValue = "0") int page,
+                                     @RequestParam(defaultValue = "10") int size) {
         return roomService.getAllRooms(page, size);
     }
 

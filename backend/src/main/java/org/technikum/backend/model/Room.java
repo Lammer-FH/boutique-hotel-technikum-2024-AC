@@ -18,16 +18,11 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    /* No annotation necessary as JPA connventions define, 
-    that for Strings, Java object and table column are names the same.
-    But for clarity they @Column could be added*/
-    private String title; 
+    private String title;
 
     private String description;
 
-    @Column(name = "person_capacity")
-    private int personCapacity;
+    private int guest_capacity;
 
-    @Column(name = "size_sqm")
-    private int sizeSqm;
+    private int size_sqm;
 }

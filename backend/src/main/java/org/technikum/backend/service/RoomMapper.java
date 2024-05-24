@@ -17,8 +17,8 @@ public class RoomMapper {
                 .id(room.getId())
                 .title(room.getTitle())
                 .description(room.getDescription())
-                .personCapacity(room.getPersonCapacity())
-                .sizeSqm(room.getSizeSqm())
+                .guest_capacity(room.getGuest_capacity())
+                .size_sqm(room.getSize_sqm())
                 .build();
     }
 
@@ -27,8 +27,8 @@ public class RoomMapper {
         room.setId(dto.getId());
         room.setTitle(dto.getTitle());
         room.setDescription(dto.getDescription());
-        room.setPersonCapacity(dto.getPersonCapacity());
-        room.setSizeSqm(dto.getSizeSqm());
+        room.setGuest_capacity(dto.getGuest_capacity());
+        room.setSize_sqm(dto.getSize_sqm());
         return room;
     }
 }
