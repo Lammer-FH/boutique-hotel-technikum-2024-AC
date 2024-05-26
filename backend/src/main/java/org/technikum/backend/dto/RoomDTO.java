@@ -14,6 +14,6 @@ public class RoomDTO {
     int id;
     String title;
     String description;
-    int guest_capacity;
-    int size_sqm;
+    int guestCapacity;
+    int sizeSqm;
 }
