@@ -16,7 +16,9 @@ It's a JPA model that maps the table columns to Java fields
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private Image id;
 
     private String title;
 
