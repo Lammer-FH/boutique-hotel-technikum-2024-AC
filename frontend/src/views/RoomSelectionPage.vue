@@ -6,7 +6,7 @@
             </ion-toolbar>
         </ion-header>
 
-
+        <ion-content :fullscreen="true" class="ion-padding">
         <div class="container">
             <div class="datepicker-container">
 
@@ -36,51 +36,43 @@
           </ion-select>
         </div>
             </div>
-            <div v-if="loading" class="loading">Loading...</div>
+
+                        <div v-if="loading" class="loading">Loading...</div>
             <div v-else class="rooms-grid">
                 <div v-for="room in rooms" :key="room.id" class="room-card">
-         <!--  <img :src="room.imageUrl" alt="Room Image" class="room-image">   -->   
-                <h3>{{ room.name }}</h3>
-                <p> Description: {{ room.description }}</p>
-                <p> Guest capacity: {{ room.guest_capacity }}</p>
+          <img :src="`/images/rooms/room${room.id}.png`" alt="Room Image" class="room-image">   
+                <h3>{{ room.title }}</h3>
+             <p> Description: {{ room.description }}</p>    
+               <p> Guest capacity: {{ room.guest_capacity }}</p>    
                 <p> Room size: {{ room.size_sqm }}</p>
             </div>
             </div>
             
 
+            
+
         </div>
+        </ion-content>
     </ion-page>
 </template>
 
 <script lang="ts">
-import { IonDatetime, IonDatetimeButton, IonModal, IonSelectOption } from '@ionic/vue';
+import { IonDatetime, IonDatetimeButton, IonModal, IonSelectOption, IonHeader, IonLabel, IonSelect, IonContent, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
 import { defineComponent, ref, onMounted } from 'vue';
 import axios from 'axios';
 
 export default defineComponent({
-    components: { IonDatetime, IonDatetimeButton, IonModal, IonSelectOption },
+    components: { IonDatetime, IonDatetimeButton, IonModal, IonSelectOption, IonHeader, IonLabel, IonSelect, IonContent, IonPage, IonTitle, IonToolbar},
     name: 'RoomSelectionPage',
     setup() {
         const selectedOptions = ref([]);
         const rooms = ref([]);
         const loading = ref(true);
-
-            const loadImage = async (imageName: string) => {
-      return (await import(`@/assets/images/${imageName}`)).default;
-
-    };
-
-
+    
     onMounted(async () => {
         try {
             const response = await axios.get('http://localhost:8080/rooms');
-            const roomData = response.data;
-
-            // load images dynamically and add them to the image-urls
-             for (const room of roomData) {
-                room.imageUrl = await loadImage(`room${room.id}.png`);
-            }
-            rooms.value = roomData; 
+            rooms.value = response.data;
 
         } catch (error) {
             console.error('Error fetching rooms', error);
