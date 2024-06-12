@@ -1,7 +1,7 @@
 <template>
     <ion-toolbar class = "breadcrumb-toolbar">
         <ion-buttons slot="start">
-            <ion-back-button defaultHref="/" text="Zurück zur Startseite"></ion-back-button>
+            <ion-back-button defaultHref="/" text="Back"></ion-back-button>
         </ion-buttons>
     </ion-toolbar>
 </template>

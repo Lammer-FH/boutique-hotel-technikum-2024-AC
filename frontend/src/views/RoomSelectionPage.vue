@@ -27,15 +27,7 @@
           </div>
         </div>
 
-        <div class="select-container">
-          <ion-label>Extras</ion-label>
-          <ion-select :multiple="true" v-model="selectedOptions" placeholder="Select Options">
-            <ion-select-option value="option1">Balcony</ion-select-option>
-            <ion-select-option value="option2">Air Condition</ion-select-option>
-            <ion-select-option value="option3">Bathroom</ion-select-option>
-            <ion-select-option value="option4">Whirlpool</ion-select-option>
-          </ion-select>
-        </div>
+        <CustomSelect />
 
         <div v-if="loading" class="loading">Loading...</div>
         <div v-else class="rooms-grid">
@@ -61,6 +53,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue';
 import Breadcrumb from '../components/Breadcrumb.vue';
+import CustomSelect from '../components/CustomSelect.vue';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonFooter, IonDatetimeButton, IonModal, IonDatetime, IonLabel, IonSelect, IonSelectOption } from '@ionic/vue';
 import axios from 'axios';
 
@@ -78,7 +71,8 @@ export default defineComponent({
     IonDatetime,
     IonLabel,
     IonSelect,
-    IonSelectOption
+    IonSelectOption,
+    CustomSelect
   },
   name: 'RoomSelectionPage',
   setup() {
@@ -101,24 +95,7 @@ export default defineComponent({
         return { selectedOptions, rooms, loading };
     }
 });
-//   data() {
-//     return {
-//       selectedOptions: [],
-//       loading: true,
-//       rooms: [
-//         // Beispiel-Raumdaten
-//         { id: 1, title: 'Room 1', description: 'Description 1', guest_capacity: 2, size_sqm: 30 },
-//         { id: 2, title: 'Room 2', description: 'Description 2', guest_capacity: 3, size_sqm: 35 }
-//       ]
-//     };
-//   },
-//   mounted() {
-//     // Simuliere das Laden von Daten
-//     setTimeout(() => {
-//       this.loading = false;
-//     }, 1000);
-//   }
-// });
+
 </script>
 
 <style scoped>
@@ -134,6 +111,7 @@ export default defineComponent({
   justify-content: space-between;
   margin-bottom: 16px;
 }
+
 .datepicker-item {
   flex: 1;
   margin-right: 16px;
