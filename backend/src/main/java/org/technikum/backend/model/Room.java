@@ -24,7 +24,8 @@ public class Room {
 
     private String description;
 
-    private int guest_capacity;
+    @Column(name = "guest_capacity")
+    private int guestCapacity;
 
     private int size_sqm;
 

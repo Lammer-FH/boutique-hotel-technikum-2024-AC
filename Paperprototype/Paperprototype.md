@@ -1,6 +1,6 @@
 # Paperprototype  
 
-This is only a draft that may change in the future.  
+Created with [Balsamiq](https://balsamiq.cloud). This is only a draft that may change in the future.  
 <br> 
 The components that could be used per page can be found below the image.
   
