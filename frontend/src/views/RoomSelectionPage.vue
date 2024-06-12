@@ -1,32 +1,33 @@
 <template>
-    <ion-page>
-        <ion-header>
-            <ion-toolbar>
-                <ion-title class="ion-text-center">Room Selection Page</ion-title>
-            </ion-toolbar>
-        </ion-header>
+  <ion-page>
+    <ion-header>
+      <ion-toolbar class="header-and-footer">
+        <ion-title>Room Selection Page</ion-title>
+      </ion-toolbar>
+      <Breadcrumb />
+    </ion-header>
 
-        <ion-content :fullscreen="true" class="ion-padding">
-        <div class="container">
-            <div class="datepicker-container">
+    <ion-content :fullscreen="true" class="ion-padding">
+      <div class="container">
+        <div class="datepicker-container">
+          <div class="datepicker-item">
+            <label>From:</label>
+            <ion-datetime-button datetime="startDatetime"></ion-datetime-button>
+            <ion-modal :keep-contents-mounted="true">
+              <ion-datetime id="startDatetime" presentation="date"></ion-datetime>
+            </ion-modal>
+          </div>
 
-                <div class="datepicker-item">
-                    <label>From:</label>
-                    <ion-datetime-button datetime="startDatetime"></ion-datetime-button>
-                    <ion-modal :keep-contents-mounted="true">
-                        <ion-datetime id="startDatetime" presentation="date"></ion-datetime>
-                    </ion-modal>
-                </div>
+          <div class="datepicker-item">
+            <label>To:</label>
+            <ion-datetime-button datetime="endDatetime"></ion-datetime-button>
+            <ion-modal :keep-contents-mounted="true">
+              <ion-datetime id="endDatetime" presentation="date"></ion-datetime>
+            </ion-modal>
+          </div>
+        </div>
 
-                <div class="datepicker-item">
-                    <label>To:</label>
-                    <ion-datetime-button datetime="endDatetime"></ion-datetime-button>
-                    <ion-modal :keep-contents-mounted="true">
-                        <ion-datetime id="endDatetime" presentation="date"></ion-datetime>
-                    </ion-modal>
-                </div>
-
-         <div class="select-container">
+        <div class="select-container">
           <ion-label>Extras</ion-label>
           <ion-select :multiple="true" v-model="selectedOptions" placeholder="Select Options">
             <ion-select-option value="option1">Balcony</ion-select-option>
@@ -35,36 +36,52 @@
             <ion-select-option value="option4">Whirlpool</ion-select-option>
           </ion-select>
         </div>
-            </div>
 
-                        <div v-if="loading" class="loading">Loading...</div>
-            <div v-else class="rooms-grid">
-                <div v-for="room in rooms" :key="room.id" class="room-card">
-          <img :src="`/images/rooms/room${room.id}.png`" alt="Room Image" class="room-image">   
-                <h3>{{ room.title }}</h3>
-             <p> Description: {{ room.description }}</p>    
-               <p> Guest capacity: {{ room.guest_capacity }}</p>    
-                <p> Room size: {{ room.size_sqm }}</p>
-            </div>
-            </div>
-            
-
-            
-
+        <div v-if="loading" class="loading">Loading...</div>
+        <div v-else class="rooms-grid">
+          <div v-for="room in rooms" :key="room.id" class="room-card">
+            <img :src="`/images/rooms/room${room.id}.png`" alt="Room Image" class="room-image">
+            <h3>{{ room.title }}</h3>
+            <p>Description: {{ room.description }}</p>
+            <p>Guest capacity: {{ room.guest_capacity }}</p>
+            <p>Room size: {{ room.size_sqm }}</p>
+          </div>
         </div>
-        </ion-content>
-    </ion-page>
+      </div>
+    </ion-content>
+
+    <ion-footer>
+      <ion-toolbar class="header-and-footer">
+        <ion-title></ion-title>
+      </ion-toolbar>
+    </ion-footer>
+  </ion-page>
 </template>
 
 <script lang="ts">
-import { IonDatetime, IonDatetimeButton, IonModal, IonSelectOption, IonHeader, IonLabel, IonSelect, IonContent, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
 import { defineComponent, ref, onMounted } from 'vue';
+import Breadcrumb from '../components/Breadcrumb.vue';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonFooter, IonDatetimeButton, IonModal, IonDatetime, IonLabel, IonSelect, IonSelectOption } from '@ionic/vue';
 import axios from 'axios';
 
 export default defineComponent({
-    components: { IonDatetime, IonDatetimeButton, IonModal, IonSelectOption, IonHeader, IonLabel, IonSelect, IonContent, IonPage, IonTitle, IonToolbar},
-    name: 'RoomSelectionPage',
-    setup() {
+  components: {
+    Breadcrumb,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonPage,
+    IonFooter,
+    IonDatetimeButton,
+    IonModal,
+    IonDatetime,
+    IonLabel,
+    IonSelect,
+    IonSelectOption
+  },
+  name: 'RoomSelectionPage',
+  setup() {
         const selectedOptions = ref([]);
         const rooms = ref([]);
         const loading = ref(true);
@@ -84,56 +101,66 @@ export default defineComponent({
         return { selectedOptions, rooms, loading };
     }
 });
+//   data() {
+//     return {
+//       selectedOptions: [],
+//       loading: true,
+//       rooms: [
+//         // Beispiel-Raumdaten
+//         { id: 1, title: 'Room 1', description: 'Description 1', guest_capacity: 2, size_sqm: 30 },
+//         { id: 2, title: 'Room 2', description: 'Description 2', guest_capacity: 3, size_sqm: 35 }
+//       ]
+//     };
+//   },
+//   mounted() {
+//     // Simuliere das Laden von Daten
+//     setTimeout(() => {
+//       this.loading = false;
+//     }, 1000);
+//   }
+// });
 </script>
 
-
-
 <style scoped>
+.header-and-footer {
+  --background: #e0d9c8;
+  text-align: center;
+}
 .container {
-    padding: 16px;
-    text-align: center;
+  padding: 16px;
 }
-
 .datepicker-container {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
 }
-
-h1 {
-    margin: 16px 0;
+.datepicker-item {
+  flex: 1;
+  margin-right: 16px;
 }
-
+.datepicker-item:last-child {
+  margin-right: 0;
+}
 .select-container {
-  width: 100%;
-  max-width: 400px;
-  text-align: left;
-  margin-bottom: 16px; /* Abstand zum nächsten Element */
+  margin-bottom: 16px;
 }
-
 .loading {
-  font-size: 1.5em;
-  color: #888;
+  text-align: center;
 }
-
 .rooms-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 16px;
-  margin-top: 16px;
 }
-
 .room-card {
-  background-color: #ffffff;
+  border: 1px solid #ccc;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 16px;
-  text-align: left;
+  text-align: center;
 }
-
 .room-image {
-  width: 100%;
-  height: auto;
-  border-radius: 8px 8px 0 0;
+  max-width: 100%;
+  border-radius: 8px;
+  margin-bottom: 16px;
 }
 </style>
