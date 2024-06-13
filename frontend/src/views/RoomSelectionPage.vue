@@ -31,12 +31,12 @@
 
         <div v-if="loading" class="loading">Loading...</div>
         <div v-else class="rooms-grid">
-          <div v-for="room in rooms" :key="room.id" class="room-card">
-            <img :src="`/images/rooms/room${room.id}.png`" alt="Room Image" class="room-image">
-            <h3>{{ room.title }}</h3>
-            <p>Description: {{ room.description }}</p>
-            <p>Guest capacity: {{ room.guest_capacity }}</p>
-            <p>Room size: {{ room.size_sqm }}</p>
+          <div v-for="room in rooms" :key="room['id']" class="room-card">
+            <img :src="`/images/rooms/room${room['id']}.png`" alt="Room Image" class="room-image">
+            <h3>{{ room['title']}}</h3>
+            <p>Description: {{ room['description'] }}</p>
+            <p>Guest capacity: {{ room['guestCapacity'] }}</p>
+            <p>Room size: {{ room['sizeSqm'] }}</p>
           </div>
         </div>
       </div>
