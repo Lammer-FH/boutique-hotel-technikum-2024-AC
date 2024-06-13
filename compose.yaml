@@ -33,7 +33,7 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: frontend.dockerfile
+      dockerfile: Dockerfile
     ports:
       - "8100:8100"
     volumes:

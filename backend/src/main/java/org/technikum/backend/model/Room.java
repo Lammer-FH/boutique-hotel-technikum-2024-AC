@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /* 
 File is an entity which represents the table 'rooms' in the database.
 It's a JPA model that maps the table columns to Java fields
@@ -27,4 +29,16 @@ public class Room {
 
     @Column(name = "size_sqm")
     private int sizeSqm;
+
+
+    @OneToMany(mappedBy = "room")
+    private List<Image> images;
+
+    @ManyToMany
+    @JoinTable(
+            name = "room_has_extra",
+            joinColumns = @JoinColumn(name = "room_id"),
+            inverseJoinColumns = @JoinColumn( name = "extra_id")
+    )
+    private List<Extra> extras;
 }

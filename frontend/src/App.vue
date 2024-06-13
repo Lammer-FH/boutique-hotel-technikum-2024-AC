@@ -1,17 +1,10 @@
 <template>
   <ion-app>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Room Booking</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content>
-      <BookingForm />
-    </ion-content>
+    <router-view />
   </ion-app>
 </template>
 
 <script setup lang="ts">
-import { IonApp, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
-import BookingForm from './components/BookingForm.vue'; // Import the BookingForm component
+import { IonApp } from '@ionic/vue';
+import LandingPage from './views/LandingPage.vue';
 </script>

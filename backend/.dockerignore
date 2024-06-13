@@ -1,0 +1,23 @@
+# Ignore Maven or Gradle directories and files
+.mvn/
+.gradle/
+
+# Ignore temporary files and directories
+*.tmp
+*.swp
+*~
+
+# Ignore IDE specific files
+.vscode/
+.idea/
+*.iml
+
+# Ignore log files
+*.log
+
+# Ignore OS generated files
+.DS_Store
+Thumbs.db
+
+# Ignore environment and configuration files
+.env

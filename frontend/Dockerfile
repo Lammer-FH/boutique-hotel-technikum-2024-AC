@@ -1,4 +1,4 @@
-# frontend/frontend.Dockerfile
+# frontend/Dockerfile
 
 FROM node:20
 
