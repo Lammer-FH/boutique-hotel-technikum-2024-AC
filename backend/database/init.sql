@@ -10,6 +10,24 @@ CREATE TABLE IF NOT EXISTS rooms (
     size_sqm INT
 );
 
+CREATE TABLE IF NOT EXISTS bookings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    room_id INT,
+    guest_id INT,
+    start_date DATE,
+    end_date DATE,
+    breakfast TINYINT,
+    FOREIGN KEY (room_id) REFERENCES rooms(id),
+    FOREIGN KEY (guest_id) REFERENCES guests(id)
+);
+
+CREATE TABLE IF NOT EXISTS guests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    firstname VARCHAR(255),
+    lastname VARCHAR(255),
+    email VARCHAR(255) UNIQUE
+);
+
 INSERT INTO rooms (title, description, guest_capacity, size_sqm) VALUES
 ('Aurora Suite', 'Erleben Sie den Zauber des Nordlichts in dieser luxurioesen Suite mit spektakulärer Aussicht.', 2, 50),
 ('Zen Garden Room', 'Ein friedlicher Rückzugsort mit einer privaten Terrasse und Zugang zu einem japanischen Garten.', 3, 40),

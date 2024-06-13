@@ -10,15 +10,15 @@
         <form @submit.prevent="submitBooking">
           <ion-item>
             <ion-label position="floating">First Name</ion-label>
-            <ion-input v-model="booking.firstName" required></ion-input>
+            <ion-input v-model="guest.firstName" required></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating">Last Name</ion-label>
-            <ion-input v-model="booking.lastName" required></ion-input>
+            <ion-input v-model="guest.lastName" required></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating">Email</ion-label>
-            <ion-input type="email" v-model="booking.email" required></ion-input>
+            <ion-input type="email" v-model="guest.email" required></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating">Confirm Email</ion-label>
@@ -61,7 +61,12 @@ import {
   IonDatetime
 } from '@ionic/vue';
 
-// Initialize dates with empty strings or ISO 8601 formatted strings
+const guest = reactive({
+  firstName: '',
+  lastName: '',
+  email: ''
+});
+
 const booking = reactive({
   roomId: 123456, // This should be dynamically set based on selected room
   startDate: '',
@@ -75,13 +80,21 @@ const confirmEmail = ref('');
 
 // Method to handle form submission
 const submitBooking = async () => {
-  if (booking.email !== confirmEmail.value) {
+  if (guest.email !== confirmEmail.value) {
     alert('Email addresses do not match.');
     return;
   }
   try {
-    const response = await axios.post('http://localhost:8080', booking);
-    alert('Booking confirmed: ' + response.data.id);
+    const guestResponse = await axios.post('http://localhost:8080/guests', guest);
+    const guestId = guestResponse.data.id;
+
+    const bookingData = {
+      ...booking,
+      guestId: guestId
+    };
+
+    const bookingResponse = await axios.post('http://localhost:8080/bookings', bookingData);
+    alert('Booking confirmed: ' + bookingResponse.data.id);
   } catch (error) {
     console.error('There was an error creating the booking!', error);
   }

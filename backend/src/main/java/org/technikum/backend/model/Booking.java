@@ -11,10 +11,10 @@ public class Booking {
     private int id;
 
     @Column(name = "room_id")
-    private int room_id;
+    private int roomId;
 
     @Column(name = "guest_id")
-    private int guest_id;
+    private int guestId;
 
     @Column(name = "start_date")
     private LocalDate startDate;
@@ -25,13 +25,75 @@ public class Booking {
     @Column(name = "breakfast")
     private boolean breakfast;
 
-    @Column(name = "first_name")
-    private String firstName;
+    public Booking() {
 
-    @Column(name = "last_name")
-    private String lastName;
+    }
 
-    @Column(name = "email")
-    private String email;
+    public Booking(int roomId, int guestId, LocalDate startDate, LocalDate endDate, boolean breakfast) {
+        this.roomId = roomId;
+        this.guestId = guestId;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.breakfast = breakfast;
+    }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
+    }
+
+    public int getGuestId() {
+        return guestId;
+    }
+
+    public void setGuestId(int guestId) {
+        this.guestId = guestId;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public boolean isBreakfast() {
+        return breakfast;
+    }
+
+    public void setBreakfast(boolean breakfast) {
+        this.breakfast = breakfast;
+    }
+
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "id=" + id +
+                ", room=" + roomId +
+                ", guest=" + guestId +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", breakfast=" + breakfast +
+                '}';
+    }
 }
