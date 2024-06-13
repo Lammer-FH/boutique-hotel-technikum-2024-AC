@@ -31,7 +31,7 @@ public class BookingController {
     @GetMapping("/{id}")
     public ResponseEntity<Booking> getBooking(@PathVariable int id) {
         return bookingService.getBooking(id)
-        .map(ResponseEntity::ok)
-        .orElse(ResponseEntity.notFound().build();
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
