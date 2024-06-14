@@ -8,7 +8,7 @@
     </ion-header>
     <ion-content class="ion-padding">
       <ion-list class="form-list">
-        <form @submit.prevent="handleSubmit">
+        <form @submit.prevent="navigateToReview">
           <ion-item class="form-item">
             <ion-label position="floating">First Name</ion-label>
             <ion-input v-model="guest.firstName" required></ion-input>
@@ -37,7 +37,7 @@
             <ion-label position="floating">End Date</ion-label>
             <ion-datetime display-format="YYYY-MM-DD" v-model="booking.endDate" required></ion-datetime>
           </ion-item>
-          <ion-button expand="full" type="submit" Submit color="secondary" class="custom-button">Submit</ion-button>
+          <ion-button expand="full" type="submit" Submit color="secondary" class="custom-button">Next</ion-button>
         </form>
       </ion-list>
     </ion-content>
@@ -52,6 +52,7 @@
 <script setup lang="ts">
 import { useBookingStore } from '../stores/useBookingStore';
 import Breadcrumb from '../components/Breadcrumb.vue';
+import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 import {
   IonPage,
@@ -72,19 +73,19 @@ import {
 const bookingStore = useBookingStore();
 const { guest, booking } = bookingStore;
 const confirmEmail = ref('');
+const router = useRouter();
 
-const handleSubmit = async () => {
+const navigateToReview = () => {
   if (guest.email.trim().toLowerCase() !== confirmEmail.value.trim().toLowerCase()) {
     alert('Email addresses do not match.');
     return;
   }
 
-  try {
-    const guestId = await bookingStore.submitGuest();
-    await bookingStore.submitBooking(guestId);
-  } catch (error) {
-    console.error('There was an error submitting the booking!', error);
+  if (booking.startDate == "" || booking.endDate == "") {
+    alert('A date is missing');
+    return;
   }
+  router.push('/bookingreview');
 };
 </script>
 

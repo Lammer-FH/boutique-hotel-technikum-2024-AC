@@ -3,7 +3,8 @@ import { RouteRecordRaw } from 'vue-router';
 import LandingPage from '../views/LandingPage.vue';
 import RoomSelectionPage from '../views/RoomSelectionPage.vue';
 import BookingForm from '../components/BookingForm.vue';
-
+import BookingConfirmation from '../components/BookingConfirmation.vue';
+import BookingReview from '../components/BookingReview.vue';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -23,6 +24,16 @@ const routes: Array<RouteRecordRaw> = [
     path: '/booking',
     name: 'BookingForm',
     component: BookingForm
+  },
+  {
+    path: '/bookingreview',
+    name: 'BookingReview',
+    component: BookingReview
+  },
+  {
+    path: '/confirmation',
+    name: 'BookingConfirmation',
+    component: BookingConfirmation
   }
 ]
 

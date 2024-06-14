@@ -8,7 +8,7 @@ public class Guest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @Column(name = "firstname")
     private String firstName;
@@ -18,6 +18,10 @@ public class Guest {
 
     @Column(name = "email", unique = true)
     private String email;
+
+    public String getFirstName() {
+        return firstName;
+    }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
