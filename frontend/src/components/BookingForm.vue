@@ -1,51 +1,58 @@
 <template>
   <ion-page>
     <ion-header>
-      <ion-toolbar>
+      <ion-toolbar class="header-and-footer">
         <ion-title>Book a Room</ion-title>
       </ion-toolbar>
+      <Breadcrumb />
     </ion-header>
-    <ion-content>
-      <ion-list>
-        <form @submit.prevent="submitBooking">
-          <ion-item>
+    <ion-content class="ion-padding">
+      <ion-list class="form-list">
+        <form @submit.prevent="handleSubmit">
+          <ion-item class="form-item">
             <ion-label position="floating">First Name</ion-label>
             <ion-input v-model="guest.firstName" required></ion-input>
           </ion-item>
-          <ion-item>
+          <ion-item class="form-item">
             <ion-label position="floating">Last Name</ion-label>
             <ion-input v-model="guest.lastName" required></ion-input>
           </ion-item>
-          <ion-item>
+          <ion-item class="form-item">
             <ion-label position="floating">Email</ion-label>
             <ion-input type="email" v-model="guest.email" required></ion-input>
           </ion-item>
-          <ion-item>
+          <ion-item class="form-item">
             <ion-label position="floating">Confirm Email</ion-label>
             <ion-input type="email" v-model="confirmEmail" required></ion-input>
           </ion-item>
-          <ion-item>
+          <ion-item class="form-item">
             <ion-label>Breakfast</ion-label>
             <ion-toggle v-model="booking.breakfast"></ion-toggle>
           </ion-item>
-          <ion-item>
+          <ion-item class="form-item">
             <ion-label position="floating">Start Date</ion-label>
-            <ion-datetime display-format="YYYY-MM-DD" v-model="booking.startDate"></ion-datetime>
+            <ion-datetime display-format="YYYY-MM-DD" v-model="booking.startDate" required></ion-datetime>
           </ion-item>
-          <ion-item>
+          <ion-item class="form-item">
             <ion-label position="floating">End Date</ion-label>
-            <ion-datetime display-format="YYYY-MM-DD" v-model="booking.endDate"></ion-datetime>
+            <ion-datetime display-format="YYYY-MM-DD" v-model="booking.endDate" required></ion-datetime>
           </ion-item>
-          <ion-button expand="full" type="submit">Submit</ion-button>
+          <ion-button expand="full" type="submit" Submit color="secondary" class="custom-button">Submit</ion-button>
         </form>
       </ion-list>
     </ion-content>
+    <ion-footer>
+      <ion-toolbar class="header-and-footer">
+          <ion-title>Impressum</ion-title>
+      </ion-toolbar>    
+  </ion-footer>
   </ion-page>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
-import axios from 'axios';
+import { useBookingStore } from '../stores/useBookingStore';
+import Breadcrumb from '../components/Breadcrumb.vue';
+import { ref } from 'vue';
 import {
   IonPage,
   IonList,
@@ -58,65 +65,100 @@ import {
   IonLabel,
   IonInput,
   IonToggle,
-  IonDatetime
+  IonDatetime,
+  IonFooter
 } from '@ionic/vue';
 
-const guest = reactive({
-  firstName: '',
-  lastName: '',
-  email: ''
-});
-
-const booking = reactive({
-  roomId: 123456, // This should be dynamically set based on selected room
-  startDate: '',
-  endDate: '',
-  firstName: '',
-  lastName: '',
-  email: '',
-  breakfast: false
-});
+const bookingStore = useBookingStore();
+const { guest, booking } = bookingStore;
 const confirmEmail = ref('');
 
-// Method to handle form submission
-const submitBooking = async () => {
-  if (guest.email !== confirmEmail.value) {
+const handleSubmit = async () => {
+  if (guest.email.trim().toLowerCase() !== confirmEmail.value.trim().toLowerCase()) {
     alert('Email addresses do not match.');
     return;
   }
+
   try {
-    const guestResponse = await axios.post('http://localhost:8080/guests', guest);
-    const guestId = guestResponse.data.id;
-
-    const bookingData = {
-      ...booking,
-      guestId: guestId
-    };
-
-    const bookingResponse = await axios.post('http://localhost:8080/bookings', bookingData);
-    alert('Booking confirmed: ' + bookingResponse.data.id);
+    const guestId = await bookingStore.submitGuest();
+    await bookingStore.submitBooking(guestId);
   } catch (error) {
-    console.error('There was an error creating the booking!', error);
+    console.error('There was an error submitting the booking!', error);
   }
 };
-
-// Optional: Watcher to ensure dates are correctly formatted
-import { watch } from 'vue';
-watch(
-  () => booking.startDate,
-  (newVal) => {
-    if (newVal && isNaN(Date.parse(newVal))) {
-      booking.startDate = '';
-    }
-  }
-);
-
-watch(
-  () => booking.endDate,
-  (newVal) => {
-    if (newVal && isNaN(Date.parse(newVal))) {
-      booking.endDate = '';
-    }
-  }
-);
 </script>
+
+<style scoped>
+
+.ion-content {
+  --background: #f7f3e9;
+}
+
+.form-item {
+  margin-bottom: 15px;
+}
+
+.form-list {
+  margin: 0 auto;
+  max-width: 600px;
+  background: #f7f3e9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hotel-image {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    margin: 20px auto;
+    border-radius: 15px;
+}
+
+.header-and-footer {
+    --background: #e0d9c8;
+    text-align: center;
+}
+
+.custom-button {
+    --background: #847e71;
+    --background-activated: #6e685e;
+    --background-focused: #6e685e;
+    --background-hover: #6e685e;
+    --color: #ffffff;
+}
+
+.position-button {
+    margin-top: 10px; 
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 20px 0 10px;
+}
+
+h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 20px 0 10px;
+}
+
+ion-card {
+    margin: 20px 0;
+}
+
+ion-button {
+    margin-top: 20px;
+}
+
+ion-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+
+
+</style>
