@@ -64,8 +64,8 @@
   
   const updateBooking = async () => {
     try {
-      await bookingStore.updateGuest(); // Example method to update guest details
-      await bookingStore.updateBooking(); // Example method to update booking details
+      const guestId = await bookingStore.submitGuest();
+      await bookingStore.submitBooking(guestId);
       router.push('/confirmation');
     } catch (error) {
       console.error('There was an error updating the booking!', error);
