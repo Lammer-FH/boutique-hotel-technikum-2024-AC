@@ -1,21 +1,36 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
-export const useBookingStore = defineStore('booking', {
+type Guest = {
+  id: null | number;
+  firstName: string;
+  lastName: string;
+  email: string;
+};
+
+type Booking = {
+  id: null | number;
+  roomId: number;
+  startDate: string;
+  endDate: string;
+  breakfast: boolean;
+}
+
+export const useBookingStore = defineStore ('booking', {
   state: () => ({
     guest: {
-        id: null as null | number,
-        firstName: '',
-        lastName: '',
-        email: ''
-    },
+      id:null,
+      firstName: '',
+      lastName: '',
+      email: ''
+    } as Guest,
     booking: {
-        id: null as null | number,
+        id: null,
         roomId: 123456,
         startDate: '',
         endDate: '',
         breakfast: false
-    }
+    } as Booking
   }),
   actions: {
     async submitBooking(guestId: number) {

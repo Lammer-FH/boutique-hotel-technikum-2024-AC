@@ -2,7 +2,11 @@ package org.technikum.backend.model;
 
 import java.time.LocalDate;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "bookings")
 public class Booking {
@@ -34,54 +38,6 @@ public class Booking {
         this.guestId = guestId;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.breakfast = breakfast;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
-    }
-
-    public int getGuestId() {
-        return guestId;
-    }
-
-    public void setGuestId(int guestId) {
-        this.guestId = guestId;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public boolean isBreakfast() {
-        return breakfast;
-    }
-
-    public void setBreakfast(boolean breakfast) {
         this.breakfast = breakfast;
     }
 
