@@ -28,16 +28,4 @@ public class GuestDTO {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public void updateFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void updateLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void updateEmail(String email) {
-        this.email = email;
-    }
 }

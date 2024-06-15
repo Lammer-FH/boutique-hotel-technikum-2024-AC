@@ -48,21 +48,4 @@ public class BookingDTO {
     public void setBreakfast(boolean breakfast) {
         this.breakfast = breakfast;
     }
-
-    public void updateRoomId(int roomId) {
-        this.roomId = roomId;
-    }
-
-    public void updateGuestId(int guestId) {
-        this.guestId = guestId;
-    }
-
-    public void updateDates(LocalDate startDate, LocalDate endDate) {
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
-
-    public void updateBreakfast(boolean breakfast) {
-        this.breakfast = breakfast;
-    }
 }

@@ -41,24 +41,6 @@ export const useBookingStore = defineStore('booking', {
         console.error('There was an error creating the guest!', error);
         throw error;
       }
-    },
-    async updateBooking() {
-        try {
-          await axios.put(`http://localhost:8080/bookings/${this.booking.id}`, this.booking);
-          console.log('Booking updated successfully.');
-        } catch (error) {
-          console.error('Error updating booking:', error);
-          throw error;
-        }
-      },
-      async updateGuest() {
-        try {
-          await axios.put(`http://localhost:8080/guests/${this.guest.id}`, this.guest);
-          console.log('Guest updated successfully.');
-        } catch (error) {
-          console.error('Error updating guest:', error);
-          throw error;
-        }
-      }
+    }
   }
 });
