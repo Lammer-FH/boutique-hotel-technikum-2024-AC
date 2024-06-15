@@ -21,3 +21,21 @@ INSERT INTO rooms (title, description, guest_capacity, size_sqm) VALUES
 ('Desert Oasis', 'Ein warmer, einladender Raum, inspiriert von den Farben und Formen der Wüste.', 2, 30),
 ('Mountain Peak Suite', 'Genießen Sie die Ruhe und Schönheit der Berge in dieser geräumigen Suite mit Panoramablick.', 4, 65),
 ('Galaxy Room', 'Schlafen Sie unter den Sternen in diesem futuristischen Raum mit kosmischer Dekoration.', 2, 35);
+
+CREATE TABLE IF NOT EXISTS bookings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    room_id INT,
+    guest_id INT,
+    start_date DATE,
+    end_date DATE,
+    breakfast TINYINT,
+    FOREIGN KEY (room_id) REFERENCES rooms(id),
+    FOREIGN KEY (guest_id) REFERENCES guests(id)
+);
+
+CREATE TABLE IF NOT EXISTS guests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    firstname VARCHAR(255),
+    lastname VARCHAR(255),
+    email VARCHAR(255) UNIQUE
+);
