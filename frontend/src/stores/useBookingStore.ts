@@ -21,7 +21,7 @@ export const useBookingStore = defineStore('booking', {
     async submitBooking(guestId: number) {
       const bookingData = {
         ...this.booking,
-        guestId: this.guest.id
+        guestId: guestId
       };
 
       try {
