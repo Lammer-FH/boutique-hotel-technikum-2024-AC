@@ -2,7 +2,9 @@ import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
 import LandingPage from '../views/LandingPage.vue';
 import RoomSelectionPage from '../views/RoomSelectionPage.vue';
-
+import BookingForm from '../components/BookingForm.vue';
+import BookingConfirmation from '../components/BookingConfirmation.vue';
+import BookingReview from '../components/BookingReview.vue';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -17,6 +19,21 @@ const routes: Array<RouteRecordRaw> = [
     path: '/rooms',
     name: 'Rooms',
     component: RoomSelectionPage
+  },
+  {
+    path: '/booking',
+    name: 'BookingForm',
+    component: BookingForm
+  },
+  {
+    path: '/bookingreview',
+    name: 'BookingReview',
+    component: BookingReview
+  },
+  {
+    path: '/confirmation',
+    name: 'BookingConfirmation',
+    component: BookingConfirmation
   }
 ]
 
