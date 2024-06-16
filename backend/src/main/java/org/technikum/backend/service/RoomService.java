@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,5 +26,10 @@ public class RoomService {
         Room room = RoomMapper.toEntity(roomDTO);
         room = roomRepository.save(room);
         return RoomMapper.toDto(room);
+    }
+
+    public List<RoomDTO> getAvailableRooms(int page, int size, LocalDate startDate, LocalDate endDate) {
+        List<Room> availableRooms = roomRepository.findAvailableRooms(startDate, endDate, PageRequest.of(page, size));
+        return availableRooms.stream().map(RoomMapper::toDto).collect(Collectors.toList());
     }
 }

@@ -32,7 +32,6 @@ public class Booking {
     private boolean breakfast;
 
     public Booking() {
-
     }
 
     public Booking(Room room, Guest guest, LocalDate startDate, LocalDate endDate, boolean breakfast) {
