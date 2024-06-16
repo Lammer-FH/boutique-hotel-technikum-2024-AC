@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS guests (
     id INT AUTO_INCREMENT PRIMARY KEY,
     firstname VARCHAR(255),
     lastname VARCHAR(255),
-    email VARCHAR(255) UNIQUE
+    email VARCHAR(255)
 );
 
 -- Bookings table
@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS bookings (
     FOREIGN KEY (room_id) REFERENCES rooms(id),
     FOREIGN KEY (guest_id) REFERENCES guests(id)
 );
+
 
 -- Insert sample data into rooms table
 INSERT INTO rooms (title, description, guest_capacity, size_sqm) VALUES
