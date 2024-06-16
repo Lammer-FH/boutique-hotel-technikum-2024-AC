@@ -5,7 +5,7 @@ import org.technikum.backend.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -18,8 +18,8 @@ public class RoomController {
     @GetMapping
     public List<RoomDTO> getAllRooms(@RequestParam(defaultValue = "0") int page,
                                      @RequestParam(defaultValue = "10") int size,
-                                     @RequestParam(required = false) Date startDate,
-                                     @RequestParam(required = false) Date endDate) {
+                                     @RequestParam(required = false) LocalDate startDate,
+                                     @RequestParam(required = false) LocalDate endDate) {
         if (startDate != null && endDate != null) {
             return roomService.getAvailableRooms(page, size, startDate, endDate);
         } else {

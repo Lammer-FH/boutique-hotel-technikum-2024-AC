@@ -63,7 +63,7 @@ INSERT INTO rooms (title, description, guest_capacity, size_sqm) VALUES
 ('Skyline Loft', 'Modernes Design trifft auf beeindruckende Stadtansichten in diesem stilvollen Loft.', 4, 60),
 ('Safari Suite', 'Abenteuerliche Einrichtung und exotische Dekorationen bringen die Wildnis in diesen komfortablen Raum.', 2, 45),
 ('Underwater Escape', 'Tauchen Sie ein in die Welt unter dem Meer mit atemberaubenden Unterwasser-Dekorationen.', 2, 35),
-('Royal Palace Room', 'Fuehlen Sie sich wie Könige in diesem opulent gestalteten Raum mit eleganter Ausstattung.', 4, 55),
+('Royal Palace Room', 'Fuehlen Sie sich wie Koenige in diesem opulent gestalteten Raum mit eleganter Ausstattung.', 4, 55),
 ('Forest Retreat', 'Ein naturverbundener Raum, umgeben von gruenen Pflanzen und Holzdekor, ideal zum Entspannen.', 3, 40),
 ('Desert Oasis', 'Ein warmer, einladender Raum, inspiriert von den Farben und Formen der Wueste.', 2, 30),
 ('Mountain Peak Suite', 'Genießen Sie die Ruhe und Schoenheit der Berge in dieser geraeumigen Suite mit Panoramablick.', 4, 65),

@@ -14,7 +14,7 @@
             <label>From:</label>
             <ion-datetime-button datetime="startDatetime"></ion-datetime-button>
             <ion-modal :keep-contents-mounted="true">
-              <ion-datetime id="startDatetime" presentation="date"></ion-datetime>
+              <ion-datetime id="startDatetime" presentation="date" @ionChange="updateStartDate"></ion-datetime>
             </ion-modal>
           </div>
 
@@ -22,7 +22,7 @@
             <label>To:</label>
             <ion-datetime-button datetime="endDatetime"></ion-datetime-button>
             <ion-modal :keep-contents-mounted="true">
-              <ion-datetime id="endDatetime" presentation="date"></ion-datetime>
+              <ion-datetime id="endDatetime" presentation="date" @ionChange="updateEndDate"></ion-datetime>
             </ion-modal>
           </div>
         </div>
@@ -31,12 +31,12 @@
 
         <div v-if="loading" class="loading">Loading...</div>
         <div v-else class="rooms-grid">
-          <div v-for="room in rooms" :key="room['id']" class="room-card">
-            <img :src="`/images/rooms/room${room['id']}.png`" alt="Room Image" class="room-image">
-            <h3>{{ room['title']}}</h3>
-            <p>Description: {{ room['description'] }}</p>
-            <p>Guest capacity: {{ room['guestCapacity'] }}</p>
-            <p>Room size: {{ room['sizeSqm'] }}</p>
+          <div v-for="room in rooms" :key="room.id" class="room-card">
+            <img :src="`/images/rooms/room${room.id}.png`" alt="Room Image" class="room-image">
+            <h3>{{ room.title }}</h3>
+            <p>Description: {{ room.description }}</p>
+            <p>Guest capacity: {{ room.guestCapacity }}</p>
+            <p>Room size: {{ room.sizeSqm }}</p>
           </div>
         </div>
       </div>
@@ -51,10 +51,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 import Breadcrumb from '../components/Breadcrumb.vue';
 import CustomSelect from '../components/CustomSelect.vue';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonFooter, IonDatetimeButton, IonModal, IonDatetime, IonLabel, IonSelect, IonSelectOption } from '@ionic/vue';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonFooter, IonDatetimeButton, IonModal, IonDatetime } from '@ionic/vue';
 import axios from 'axios';
 
 export default defineComponent({
@@ -69,33 +69,68 @@ export default defineComponent({
     IonDatetimeButton,
     IonModal,
     IonDatetime,
-    IonLabel,
-    IonSelect,
-    IonSelectOption,
     CustomSelect
   },
   name: 'RoomSelectionPage',
   setup() {
-        const selectedOptions = ref([]);
-        const rooms = ref([]);
-        const loading = ref(true);
-    
-    onMounted(async () => {
-        try {
-            const response = await axios.get('http://localhost:8080/rooms');
-            rooms.value = response.data;
+    const selectedOptions = ref([]);
+    const rooms = ref([]);
+    const loading = ref(true);
+    const startDate = ref('');
+    const endDate = ref('');
+    const page = ref(0);
+    const size = ref(10);
 
-        } catch (error) {
-            console.error('Error fetching rooms', error);
-        } finally {
-            loading.value = false;
+    const formatDate = (dateString) => {
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    };
+
+    const fetchRooms = async () => {
+      loading.value = true;
+      try {
+        const params = {
+          page: page.value,
+          size: size.value,
+        };
+
+        if (startDate.value) {
+          params.startDate = formatDate(startDate.value);
         }
-    });
 
-        return { selectedOptions, rooms, loading };
-    }
+        if (endDate.value) {
+          params.endDate = formatDate(endDate.value);
+        }
+
+        const response = await axios.get('http://localhost:8080/rooms', { params });
+        rooms.value = response.data;
+      } catch (error) {
+        console.error('Error fetching rooms', error);
+      } finally {
+        loading.value = false;
+      }
+    };
+
+    const updateStartDate = (event) => {
+      startDate.value = event.target.value;
+      fetchRooms();
+    };
+
+    const updateEndDate = (event) => {
+      endDate.value = event.target.value;
+      fetchRooms();
+    };
+
+    watch([startDate, endDate, page, size], fetchRooms);
+
+    fetchRooms();
+
+    return { selectedOptions, rooms, loading, updateStartDate, updateEndDate };
+  }
 });
-
 </script>
 
 <style scoped>
@@ -111,16 +146,12 @@ export default defineComponent({
   justify-content: space-between;
   margin-bottom: 16px;
 }
-
 .datepicker-item {
   flex: 1;
   margin-right: 16px;
 }
 .datepicker-item:last-child {
   margin-right: 0;
-}
-.select-container {
-  margin-bottom: 16px;
 }
 .loading {
   text-align: center;
