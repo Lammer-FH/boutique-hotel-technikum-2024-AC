@@ -1,0 +1,29 @@
+.header-and-footer {
+    --background: #e0d9c8;
+    text-align: center;
+}
+
+.ion-content {
+    --background: #f7f3e9;
+  }
+
+  .form-item {
+    margin-bottom: 15px;
+  }
+
+  .custom-button {
+    --background: #847e71;
+    --background-activated: #6e685e;
+    --background-focused: #6e685e;
+    --background-hover: #6e685e;
+    --color: #ffffff;
+}
+
+.form-list {
+    margin: 0 auto;
+    max-width: 600px;
+    background: #f7f3e9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
