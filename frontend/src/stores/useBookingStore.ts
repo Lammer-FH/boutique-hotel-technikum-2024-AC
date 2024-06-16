@@ -8,9 +8,17 @@ type Guest = {
   email: string;
 };
 
+type Room = {
+  id: number;
+  title: string;
+  description: string;
+  guestCapacity: number;
+  sizeSqm: number;
+};
+
 type Booking = {
   id: null | number;
-  roomId: number;
+  room: Room | null;
   startDate: string;
   endDate: string;
   breakfast: boolean;
@@ -26,7 +34,13 @@ export const useBookingStore = defineStore ('booking', {
     } as Guest,
     booking: {
         id: null,
-        roomId: 123456,
+        room: { 
+          id: 123456,
+          title: 'Test Room',
+          description: 'A room for testing purposes',
+          guestCapacity: 2,
+          sizeSqm: 30,
+        } as Room,
         startDate: '',
         endDate: '',
         breakfast: false
@@ -36,7 +50,8 @@ export const useBookingStore = defineStore ('booking', {
     async submitBooking(guestId: number) {
       const bookingData = {
         ...this.booking,
-        guestId: guestId
+        guestId: guestId,
+        roomId: this.booking.room ? this.booking.room.id : null,
       };
 
       try {

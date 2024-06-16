@@ -8,8 +8,9 @@ import lombok.Value;
 @Value
 @Builder
 public class BookingDTO {
-    private int roomId;
-    private int guestId;
+    private int id;
+    private RoomDTO room;
+    private GuestDTO guest;
     private LocalDate startDate;
     private LocalDate endDate;
     private boolean breakfast;

@@ -21,9 +21,8 @@ public class GuestController {
     private GuestService guestService;
 
     @PostMapping
-    public ResponseEntity<Guest> createGuest(@RequestBody GuestDTO guestDTO) {
-        Guest createdGuest = guestService.createGuest(guestDTO);
-        return ResponseEntity.ok(createdGuest);
+    public GuestDTO createGuest(@RequestBody GuestDTO guestDTO) {
+        return guestService.createGuest(guestDTO);
     }
 
     @GetMapping("/{id}")

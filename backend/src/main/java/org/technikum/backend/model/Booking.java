@@ -14,11 +14,13 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "room_id")
-    private int roomId;
+    @ManyToOne
+    @JoinColumn(name = "room_id", nullable = false)
+    private Room room;
 
-    @Column(name = "guest_id")
-    private int guestId;
+    @ManyToOne
+    @JoinColumn(name = "guest_id", nullable = false)
+    private Guest guest;
 
     @Column(name = "start_date")
     private LocalDate startDate;
@@ -33,9 +35,9 @@ public class Booking {
 
     }
 
-    public Booking(int roomId, int guestId, LocalDate startDate, LocalDate endDate, boolean breakfast) {
-        this.roomId = roomId;
-        this.guestId = guestId;
+    public Booking(Room room, Guest guest, LocalDate startDate, LocalDate endDate, boolean breakfast) {
+        this.room = room;
+        this.guest = guest;
         this.startDate = startDate;
         this.endDate = endDate;
         this.breakfast = breakfast;
@@ -45,8 +47,8 @@ public class Booking {
     public String toString() {
         return "Booking{" +
                 "id=" + id +
-                ", room=" + roomId +
-                ", guest=" + guestId +
+                ", room=" + room +
+                ", guest=" + guest +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", breakfast=" + breakfast +

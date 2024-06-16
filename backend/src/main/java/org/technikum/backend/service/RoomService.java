@@ -16,17 +16,14 @@ public class RoomService {
     @Autowired
     private RoomRepository roomRepository;
 
-    @Autowired
-    private RoomMapper roomMapper;
-
     public List<RoomDTO> getAllRooms(int page, int size) {
         List<Room> rooms = roomRepository.findAll(PageRequest.of(page, size)).getContent();
-        return rooms.stream().map(roomMapper::toDto).collect(Collectors.toList());
+        return rooms.stream().map(RoomMapper::toDto).collect(Collectors.toList());
     }
 
     public RoomDTO createRoom(RoomDTO roomDTO) {
-        Room room = roomMapper.toEntity(roomDTO);
+        Room room = RoomMapper.toEntity(roomDTO);
         room = roomRepository.save(room);
-        return roomMapper.toDto(room);
+        return RoomMapper.toDto(room);
     }
 }

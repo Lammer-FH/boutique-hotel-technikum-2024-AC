@@ -6,6 +6,7 @@ import lombok.Value;
 @Value
 @Builder
 public class GuestDTO {
+    private int id;
     private String firstName;
     private String lastName;
     private String email;

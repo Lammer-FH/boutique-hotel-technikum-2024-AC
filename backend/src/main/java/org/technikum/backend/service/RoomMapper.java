@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RoomMapper {
 
-    public RoomDTO toDto(Room room) {
+    public static RoomDTO toDto(Room room) {
         return RoomDTO.builder()
                 .id(room.getId())
                 .title(room.getTitle())
@@ -22,7 +22,7 @@ public class RoomMapper {
                 .build();
     }
 
-    public Room toEntity(RoomDTO dto) {
+    public static Room toEntity(RoomDTO dto) {
         Room room = new Room();
         room.setId(dto.getId());
         room.setTitle(dto.getTitle());

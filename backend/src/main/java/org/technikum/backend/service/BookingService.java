@@ -1,6 +1,5 @@
 package org.technikum.backend.service;
 
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.technikum.backend.repository.BookingRepository;
@@ -13,20 +12,16 @@ public class BookingService {
     @Autowired
     private BookingRepository bookingRepository;
 
-    public Booking createBooking(BookingDTO bookingDTO) {
-        Booking booking = new Booking();
-        booking.setRoomId(bookingDTO.getRoomId());
-        booking.setGuestId(bookingDTO.getGuestId());
-        booking.setStartDate(bookingDTO.getStartDate());
-        booking.setEndDate(bookingDTO.getEndDate());
-        booking.setBreakfast(bookingDTO.isBreakfast());
-
-        // Optionally, perform additional validation or business logic here
-
-        return bookingRepository.save(booking);
+    public BookingDTO createBooking(BookingDTO bookingDTO) {
+        try {
+            Booking booking = BookingMapper.toEntity(bookingDTO);
+            Booking savedBooking = bookingRepository.save(booking);
+            return BookingMapper.toDto(savedBooking);
+        } catch (Exception e) {
+            // Handle any unexpected exceptions or DataIntegrityViolationException
+            // Log error or throw a custom exception if needed
+            throw new RuntimeException("Failed to create booking: " + e.getMessage(), e);
+        }
     }
 
-    public Optional<Booking> getBooking(int id) {
-        return bookingRepository.findById(id);
-    }
 }

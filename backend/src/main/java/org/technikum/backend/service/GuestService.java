@@ -18,13 +18,10 @@ public class GuestService {
         return guestRepository.findAll();
     }
 
-    public Guest createGuest(GuestDTO guestDTO) {
-        Guest guest = new Guest();
-        guest.setFirstName(guestDTO.getFirstName());
-        guest.setLastName(guestDTO.getLastName());
-        guest.setEmail(guestDTO.getEmail());
-
-        return guestRepository.save(guest);
+    public GuestDTO createGuest(GuestDTO guestDTO) {
+        Guest guest = GuestMapper.toEntity(guestDTO);
+        Guest savedGuest = guestRepository.save(guest);
+        return GuestMapper.toDto(savedGuest);
     }
 
     public Optional<Guest> getGuestById(int id) {
