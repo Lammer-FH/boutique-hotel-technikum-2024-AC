@@ -37,5 +37,5 @@ CREATE TABLE IF NOT EXISTS guests (
     id INT AUTO_INCREMENT PRIMARY KEY,
     firstname VARCHAR(255),
     lastname VARCHAR(255),
-    email VARCHAR(255) UNIQUE
+    email VARCHAR(255)
 );

@@ -41,14 +41,6 @@
             <ion-label>Breakfast</ion-label>
             <ion-toggle v-model="booking.breakfast"></ion-toggle>
           </ion-item>
-          <ion-item class="form-item">
-            <ion-label position="floating">Start Date</ion-label>
-            <ion-datetime display-format="YYYY-MM-DD" v-model="booking.startDate" required></ion-datetime>
-          </ion-item>
-          <ion-item class="form-item">
-            <ion-label position="floating">End Date</ion-label>
-            <ion-datetime display-format="YYYY-MM-DD" v-model="booking.endDate" required></ion-datetime>
-          </ion-item>
           <ion-button expand="full" type="submit" color="secondary" class="custom-button" @click="editMode = false">Save Changes</ion-button>
         </form>
       </ion-list>
