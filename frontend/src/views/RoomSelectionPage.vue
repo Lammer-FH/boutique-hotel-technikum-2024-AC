@@ -37,6 +37,7 @@
             <p>Description: {{ room.description }}</p>
             <p>Guest capacity: {{ room.guestCapacity }}</p>
             <p>Room size: {{ room.sizeSqm }}</p>
+            <ion-button @click="navigateToBooking(room.id, startDate, endDate)">Book Now</ion-button>
           </div>
         </div>
       </div>
@@ -52,9 +53,10 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import Breadcrumb from '../components/Breadcrumb.vue';
 import CustomSelect from '../components/CustomSelect.vue';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonFooter, IonDatetimeButton, IonModal, IonDatetime } from '@ionic/vue';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonFooter, IonDatetimeButton, IonModal, IonDatetime, IonButton } from '@ionic/vue';
 import axios from 'axios';
 
 export default defineComponent({
@@ -69,10 +71,12 @@ export default defineComponent({
     IonDatetimeButton,
     IonModal,
     IonDatetime,
+    IonButton,
     CustomSelect
   },
   name: 'RoomSelectionPage',
   setup() {
+    const router = useRouter();
     const selectedOptions = ref([]);
     const rooms = ref([]);
     const loading = ref(true);
@@ -124,11 +128,22 @@ export default defineComponent({
       fetchRooms();
     };
 
+    const navigateToBooking = (roomId, startDate, endDate) => {
+      router.push({ 
+        name: 'BookingForm', 
+        query: { 
+          roomId: roomId, 
+          startDate: formatDate(startDate), 
+          endDate: formatDate(endDate) 
+        }
+      });
+    };
+
     watch([startDate, endDate, page, size], fetchRooms);
 
     fetchRooms();
 
-    return { selectedOptions, rooms, loading, updateStartDate, updateEndDate };
+    return { selectedOptions, rooms, loading, updateStartDate, updateEndDate, navigateToBooking };
   }
 });
 </script>
