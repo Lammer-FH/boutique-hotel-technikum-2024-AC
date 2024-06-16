@@ -19,6 +19,7 @@ type Room = {
 type Booking = {
   id: null | number;
   room: Room | null;
+  guest: Guest;
   startDate: string;
   endDate: string;
   breakfast: boolean;
@@ -35,12 +36,18 @@ export const useBookingStore = defineStore ('booking', {
     booking: {
         id: null,
         room: { 
-          id: 123456,
-          title: 'Test Room',
-          description: 'A room for testing purposes',
+          id: 1,
+          title: 'Aurora Suite',
+          description: 'Erleben Sie den Zauber des Nordlichts in dieser luxurioesen Suite mit spektakulärer Aussicht.',
           guestCapacity: 2,
-          sizeSqm: 30,
+          sizeSqm: 50,
         } as Room,
+        guest: {
+          id: null,
+          firstName: '',
+          lastName: '',
+          email: ''
+        } as Guest,
         startDate: '',
         endDate: '',
         breakfast: false
@@ -48,24 +55,31 @@ export const useBookingStore = defineStore ('booking', {
   }),
   actions: {
     async submitBooking(guestId: number) {
-      const bookingData = {
-        ...this.booking,
-        guestId: guestId,
-        roomId: this.booking.room ? this.booking.room.id : null,
-      };
+        try {
+            console.log('Booking State:', this.booking);
+            console.log('Guest ID:', this.booking.guest.id);
+            if (!this.booking.guest.id) {
+              throw new Error('Guest information is incomplete.');
+            }
 
-      try {
-        const bookingResponse = await axios.post('http://localhost:8080/bookings', bookingData);
-        return bookingResponse.data.id;
-      } catch (error) {
-        console.error('There was an error creating the booking!', error);
-        throw error;
-      }
+          const bookingData = {
+            ...this.booking,
+            guestId: this.booking.guest.id,
+            roomId: this.booking.room ? this.booking.room.id : null,
+          };
+
+          console.log('Booking Data:', bookingData);
+          const bookingResponse = await axios.post('http://localhost:8080/bookings', bookingData);
+          return bookingResponse.data.id;
+        } catch (error) {
+            console.error('There was an error creating the booking!', error);
+            throw error;
+          }
     },
     async submitGuest() {
       try {
         const guestResponse = await axios.post('http://localhost:8080/guests', this.guest);
-        this.guest.id = guestResponse.data.id;
+        this.booking.guest.id = guestResponse.data.id;
         return guestResponse.data.id;
       } catch (error) {
         console.error('There was an error creating the guest!', error);
