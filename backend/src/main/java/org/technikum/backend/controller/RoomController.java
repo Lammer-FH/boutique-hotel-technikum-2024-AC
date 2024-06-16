@@ -17,7 +17,7 @@ public class RoomController {
 
     @GetMapping
     public List<RoomDTO> getAllRooms(@RequestParam(defaultValue = "0") int page,
-                                     @RequestParam(defaultValue = "10") int size,
+                                     @RequestParam(defaultValue = "5") int size,
                                      @RequestParam(required = false) LocalDate startDate,
                                      @RequestParam(required = false) LocalDate endDate) {
         if (startDate != null && endDate != null) {

@@ -8,7 +8,6 @@
             <ion-datetime id="startDatetime" presentation="date" @ionChange="onStartDateChange"></ion-datetime>
           </ion-modal>
         </div>
-  
         <div class="datepicker-item">
           <label>To:</label>
           <ion-datetime-button datetime="endDatetime"></ion-datetime-button>
@@ -17,9 +16,7 @@
           </ion-modal>
         </div>
       </div>
-  
       <CustomSelect />
-  
       <div v-if="store.loading" class="loading">Loading...</div>
       <div v-else class="rooms-grid">
         <div v-for="room in store.rooms" :key="room.id" class="room-card">
@@ -30,6 +27,11 @@
           <p>Room size: {{ room.sizeSqm }}</p>
           <ion-button @click="navigateToBooking(room.id)">Book Now</ion-button>
         </div>
+      </div>
+      <div class="pagination">
+        <ion-button @click="prevPage" :disabled="store.page === 0">Previous</ion-button>
+        <span>Page {{ store.page + 1 }}</span>
+        <ion-button @click="nextPage" :disabled="!store.hasMoreRooms">Next</ion-button>
       </div>
     </div>
   </template>
@@ -92,7 +94,21 @@
         });
       };
   
-      return { store, onStartDateChange, onEndDateChange, navigateToBooking };
+      const prevPage = () => {
+        if (store.page > 0) {
+          store.page -= 1;
+          store.fetchRooms();
+        }
+      };
+  
+      const nextPage = () => {
+        if (store.hasMoreRooms) {
+          store.page += 1;
+          store.fetchRooms();
+        }
+      };
+  
+      return { store, onStartDateChange, onEndDateChange, navigateToBooking, prevPage, nextPage };
     }
   });
   </script>
@@ -131,5 +147,10 @@
     max-width: 100%;
     border-radius: 8px;
     margin-bottom: 16px;
+  }
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
   }
   </style>
