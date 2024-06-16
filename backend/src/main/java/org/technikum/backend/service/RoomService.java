@@ -30,6 +30,6 @@ public class RoomService {
 
     public List<RoomDTO> getAvailableRooms(int page, int size, LocalDate startDate, LocalDate endDate) {
         List<Room> availableRooms = roomRepository.findAvailableRooms(startDate, endDate, PageRequest.of(page, size));
-        return availableRooms.stream().map(roomMapper::toDto).collect(Collectors.toList());
+        return availableRooms.stream().map(RoomMapper::toDto).collect(Collectors.toList());
     }
 }
