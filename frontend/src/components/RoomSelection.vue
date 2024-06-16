@@ -5,7 +5,7 @@
           <label>From:</label>
           <ion-datetime-button datetime="startDatetime"></ion-datetime-button>
           <ion-modal :keep-contents-mounted="true">
-            <ion-datetime id="startDatetime" presentation="date" @ionChange="updateStartDate"></ion-datetime>
+            <ion-datetime id="startDatetime" presentation="date" @ionChange="onStartDateChange"></ion-datetime>
           </ion-modal>
         </div>
   
@@ -13,16 +13,16 @@
           <label>To:</label>
           <ion-datetime-button datetime="endDatetime"></ion-datetime-button>
           <ion-modal :keep-contents-mounted="true">
-            <ion-datetime id="endDatetime" presentation="date" @ionChange="updateEndDate"></ion-datetime>
+            <ion-datetime id="endDatetime" presentation="date" @ionChange="onEndDateChange"></ion-datetime>
           </ion-modal>
         </div>
       </div>
   
       <CustomSelect />
   
-      <div v-if="loading" class="loading">Loading...</div>
+      <div v-if="store.loading" class="loading">Loading...</div>
       <div v-else class="rooms-grid">
-        <div v-for="room in rooms" :key="room.id" class="room-card">
+        <div v-for="room in store.rooms" :key="room.id" class="room-card">
           <img :src="`/images/rooms/room${room.id}.png`" alt="Room Image" class="room-image">
           <h3>{{ room.title }}</h3>
           <p>Description: {{ room.description }}</p>
@@ -35,19 +35,11 @@
   </template>
   
   <script lang="ts">
-  import { defineComponent, ref, watch } from 'vue';
+  import { defineComponent } from 'vue';
   import { useRouter } from 'vue-router';
+  import { useRoomSelectionStore } from '../stores/useRoomSelectionStore';
   import CustomSelect from '../components/CustomSelect.vue';
   import { IonDatetimeButton, IonModal, IonDatetime, IonButton } from '@ionic/vue';
-  import axios from 'axios';
-  
-  interface Room {
-    id: number;
-    title: string;
-    description: string;
-    guestCapacity: number;
-    sizeSqm: number;
-  }
   
   export default defineComponent({
     components: {
@@ -58,14 +50,8 @@
       IonButton
     },
     setup() {
+      const store = useRoomSelectionStore();
       const router = useRouter();
-      const selectedOptions = ref([]);
-      const rooms = ref<Room[]>([]);
-      const loading = ref(true);
-      const startDate = ref('');
-      const endDate = ref('');
-      const page = ref(0);
-      const size = ref(10);
   
       const formatDate = (dateString: string) => {
         const date = new Date(dateString);
@@ -75,72 +61,38 @@
         return `${year}-${month}-${day}`;
       };
   
-      const fetchRooms = async () => {
-        loading.value = true;
-        try {
-          const params: Record<string, any> = {
-            page: page.value,
-            size: size.value,
-          };
-  
-          if (startDate.value) {
-            params.startDate = startDate.value;
-          }
-  
-          if (endDate.value) {
-            params.endDate = endDate.value;
-          }
-  
-          const response = await axios.get('http://localhost:8080/rooms', { params });
-          rooms.value = response.data;
-        } catch (error) {
-          console.error('Error fetching rooms', error);
-        } finally {
-          loading.value = false;
-        }
-      };
-  
-      const updateStartDate = (event: CustomEvent) => {
+      const onStartDateChange = (event: CustomEvent) => {
         const target = event.target as HTMLIonDatetimeElement;
         const formattedDate = formatDate(String(target.value));
-        startDate.value = formattedDate;
-        console.log('Updated start date:', startDate.value);
-        fetchRooms();
+        store.updateStartDate(formattedDate);
       };
   
-      const updateEndDate = (event: CustomEvent) => {
+      const onEndDateChange = (event: CustomEvent) => {
         const target = event.target as HTMLIonDatetimeElement;
         const formattedDate = formatDate(String(target.value));
-        endDate.value = formattedDate;
-        console.log('Updated end date:', endDate.value);
-        fetchRooms();
+        store.updateEndDate(formattedDate);
       };
   
       const navigateToBooking = (roomId: number) => {
-        const formattedStartDate = startDate.value;
-        const formattedEndDate = endDate.value;
-        console.log('Navigating to Booking Form with:', { roomId, formattedStartDate, formattedEndDate });
+        const formattedStartDate = store.startDate;
+        const formattedEndDate = store.endDate;
   
         if (!formattedStartDate || !formattedEndDate) {
           console.error('Start date or end date is not defined');
           return;
         }
   
-        router.push({ 
-          name: 'BookingForm', 
-          query: { 
-            roomId: roomId.toString(), 
-            startDate: formattedStartDate, 
-            endDate: formattedEndDate 
-          }
+        router.push({
+          name: 'BookingForm',
+          query: {
+            roomId: roomId.toString(),
+            startDate: formattedStartDate,
+            endDate: formattedEndDate,
+          },
         });
       };
   
-      watch([startDate, endDate, page, size], fetchRooms);
-  
-      fetchRooms();
-  
-      return { selectedOptions, rooms, loading, updateStartDate, updateEndDate, navigateToBooking, startDate, endDate };
+      return { store, onStartDateChange, onEndDateChange, navigateToBooking };
     }
   });
   </script>
