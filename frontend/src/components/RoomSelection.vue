@@ -6,14 +6,14 @@
         <label>From:</label>
         <ion-datetime-button datetime="startDatetime"></ion-datetime-button>
         <ion-modal :keep-contents-mounted="true">
-          <ion-datetime id="startDatetime" presentation="date" @ionChange="onStartDateChange" :min="minDate" :value="startDate"></ion-datetime>
+          <ion-datetime id="startDatetime" presentation="date" @ionChange="onStartDateChange" :min="minDate" :value="startDate" v-model="startDate"></ion-datetime>
         </ion-modal>
       </div>
       <div class="datepicker-item">
         <label>To:</label>
         <ion-datetime-button datetime="endDatetime"></ion-datetime-button>
         <ion-modal :keep-contents-mounted="true">
-          <ion-datetime id="endDatetime" presentation="date" @ionChange="onEndDateChange" :min="minEndDate" :value="endDate"></ion-datetime>
+          <ion-datetime id="endDatetime" presentation="date" @ionChange="onEndDateChange" :min="minEndDate" :value="endDate" v-model="endDate"></ion-datetime>
         </ion-modal>
       </div>
     </div>
@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useRoomSelectionStore } from '../stores/useRoomSelectionStore';
 import CustomSelect from '../components/CustomSelect.vue';
@@ -57,7 +57,6 @@ export default defineComponent({
   setup() {
     const store = useRoomSelectionStore();
     const router = useRouter();
-
     const minDate = new Date().toISOString().split('T')[0]; // Today's date
 
     // Using ref for minEndDate and endDate
@@ -116,6 +115,17 @@ export default defineComponent({
       store.fetchRooms();
     });
 
+    watch(startDate, (newVal) => {
+      if (newVal) {
+        const selectedDate = new Date(newVal);
+        selectedDate.setDate(selectedDate.getDate() + 1); // Set end date minimum to the day after start date
+        endDate.value = selectedDate.toISOString().split('T')[0]; // Update endDate
+        store.updateStartDate(formatDate(newVal));
+        store.updateEndDate(formatDate(endDate.value));
+        console.log("enddate: ", endDate);
+        console.log("minenddate: ", minEndDate);
+      }
+    });
     return { store, minDate, minEndDate, endDate, startDate, onStartDateChange, onEndDateChange, onExtrasChange, navigateToBooking, prevPage, nextPage };
   }
 });
