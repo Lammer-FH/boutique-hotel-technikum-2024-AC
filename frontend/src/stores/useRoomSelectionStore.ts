@@ -76,5 +76,8 @@ export const useRoomSelectionStore = defineStore('roomSelection', {
       this.page = 0;
       this.fetchRooms();
     },
+    resetExtras() {
+      this.extras = [];
+    }
   },
 });

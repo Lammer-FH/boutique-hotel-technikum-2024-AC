@@ -14,6 +14,7 @@
         <ion-card-content>
           <p><strong>Start Date:</strong> {{ booking.startDate }}</p>
           <p><strong>End Date:</strong> {{ booking.endDate }}</p>
+          <p><strong>Room Number:</strong> {{ booking.room?.id }}</p>
         </ion-card-content>
       </ion-card>
       <ion-list class="form-list">
