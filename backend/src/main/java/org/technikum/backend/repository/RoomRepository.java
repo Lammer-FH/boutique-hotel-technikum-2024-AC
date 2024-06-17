@@ -13,6 +13,7 @@ import java.util.List;
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Integer> {
 
+
     @Query("SELECT r FROM Room r WHERE r.id NOT IN (" +
             "SELECT b.room.id FROM Booking b WHERE " +
             "(:startDate <= b.endDate AND :endDate >= b.startDate))")
@@ -20,9 +21,15 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
                                   @Param("endDate") LocalDate endDate,
                                   Pageable pageable);
 
-    @Query("SELECT DISTINCT r FROM Room r JOIN r.extras e WHERE e.name IN :extras GROUP BY r HAVING COUNT(DISTINCT e) = :numExtras")
-    List<Room> findRoomsByExtras(@Param("extras") List<String> extras, @Param("numExtras") long numExtras, Pageable pageable);
 
+    @Query("SELECT DISTINCT r FROM Room r " +
+           "JOIN r.extras e WHERE e.name IN :extras " +
+           "GROUP BY r.id HAVING COUNT(DISTINCT e) = :numExtras")
+    List<Room> findRoomsByExtras(@Param("extras") List<String> extras,
+                                 @Param("numExtras") long numExtras,
+                                 Pageable pageable);
+
+                 
     @Query("SELECT DISTINCT r FROM Room r " +
            "JOIN r.extras e " +
            "WHERE e.name IN :extras " +
@@ -30,19 +37,10 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
            "   SELECT b.room.id FROM Booking b WHERE " +
            "   (:startDate <= b.endDate AND :endDate >= b.startDate)" +
            ") " +
-           "GROUP BY r HAVING COUNT(DISTINCT e) = :numExtras")
-    List<Room> findRoomsByAvailabilityAndExtras(
-            @Param("startDate") LocalDate startDate,
-            @Param("endDate") LocalDate endDate,
-            @Param("extras") List<String> extras,
-            @Param("numExtras") long numExtras,
-            Pageable pageable);
-
-    @Query("SELECT CASE WHEN COUNT(b) = 0 THEN TRUE ELSE FALSE END " +
-           "FROM Booking b WHERE b.room.id = :roomId AND " +
-           "(:startDate <= b.endDate AND :endDate >= b.startDate)")
-    boolean checkRoomAvailability(
-            @Param("roomId") int roomId,
-            @Param("startDate") LocalDate startDate,
-            @Param("endDate") LocalDate endDate);
+           "GROUP BY r.id HAVING COUNT(DISTINCT e) = :numExtras")
+    List<Room> findRoomsByAvailabilityAndExtras(@Param("startDate") LocalDate startDate,
+                                                @Param("endDate") LocalDate endDate,
+                                                @Param("extras") List<String> extras,
+                                                @Param("numExtras") long numExtras,
+                                                Pageable pageable);
 }
