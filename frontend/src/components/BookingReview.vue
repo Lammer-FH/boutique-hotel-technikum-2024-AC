@@ -18,6 +18,7 @@
           <p><strong>Breakfast:</strong> {{ booking.breakfast ? 'Yes' : 'No' }}</p>
           <p><strong>Start Date:</strong> {{ booking.startDate }}</p>
           <p><strong>End Date:</strong> {{ booking.endDate }}</p>
+          <p><strong>Room Number:</strong> {{ booking.room?.id }}</p>
           <ion-button expand="full" @click="editMode = true" color="secondary" class="custom-button">Edit Booking</ion-button>
         </ion-card-content>
       </ion-card>
@@ -25,6 +26,32 @@
       <!-- Edit Section -->
       <ion-list class="form-list" v-if="editMode">
         <form @submit.prevent="updateBooking">
+          <ion-item class="date-picker">
+            <div class="datepicker-container">
+              <div class="datepicker-item">
+                <label>From:</label>
+                <ion-datetime-button datetime="startDatetime"></ion-datetime-button>
+                <ion-modal :keep-contents-mounted="true">
+                  <ion-datetime id="startDatetime" presentation="date" @ionChange="onStartDateChange" :min="minDate" v-model="booking.startDate"></ion-datetime>
+                </ion-modal>
+              </div>
+              <div class="datepicker-item">
+                <label>To:</label>
+                <ion-datetime-button datetime="endDatetime"></ion-datetime-button>
+                <ion-modal :keep-contents-mounted="true">
+                  <ion-datetime id="endDatetime" presentation="date" @ionChange="onEndDateChange" :min="minEndDate" v-model="booking.endDate"></ion-datetime>
+                </ion-modal>
+              </div>
+            </div>
+            <ion-item class="form-item">
+              <ion-label>Room Number</ion-label>
+              <ion-select v-model="selectedRoomId" interface="popover" placeholder="Select Room">
+                <ion-select-option v-for="room in availableRooms" :key="room.id" :value="room.id">
+                  {{ room.title }} (Room ID: {{ room.id }})
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-item>
           <ion-item class="form-item">
             <ion-label position="floating">First Name</ion-label>
             <ion-input v-model="guest.firstName" required></ion-input>
@@ -53,7 +80,9 @@
 
 <script setup lang="ts">
 import { useBookingStore } from '../stores/useBookingStore';
-import { ref } from 'vue';
+import { useRoomSelectionStore, Room } from '../stores/useRoomSelectionStore';
+import { ref, onMounted, watch } from 'vue';
+import { useDateChange } from '../composables/useDateChange';
 import { useRouter } from 'vue-router';
 import {
   IonPage,
@@ -71,12 +100,22 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
+  IonSelect,
+  IonSelectOption,
+  IonDatetimeButton,
+  IonModal,
 } from '@ionic/vue';
 
 const bookingStore = useBookingStore();
+const roomSelectionStore = useRoomSelectionStore();
 const { guest, booking } = bookingStore;
 const router = useRouter();
 const editMode = ref(false);
+const minDate = ref(new Date().toISOString().split('T')[0]); // Today's date as a reactive ref
+const selectedRoomId = ref(booking.room?.id);
+const availableRooms = ref([] as Room[]);
+
+const { minEndDate, onStartDateChange, onEndDateChange } = useDateChange();
 
 const updateBooking = async () => {
   try {
@@ -87,8 +126,45 @@ const updateBooking = async () => {
     console.error('There was an error updating the booking!', error);
   }
 };
+
+const fetchAllRooms = async () => {
+  let fetchMore = true;
+  availableRooms.value = [];
+  roomSelectionStore.page = 0;
+
+  while (fetchMore) {
+    await roomSelectionStore.fetchRooms();
+    if (roomSelectionStore.rooms.length > 0) {
+      availableRooms.value = [...availableRooms.value, ...roomSelectionStore.rooms];
+      fetchMore = roomSelectionStore.rooms.length === roomSelectionStore.size;
+      roomSelectionStore.page += 1;
+    } else {
+      fetchMore = false;
+    }
+  }
+};
+
+watch(selectedRoomId, (newRoomId) => {
+  if (newRoomId !== undefined) {
+    booking.room = availableRooms.value.find(room => room.id === newRoomId) || null;
+  }
+});
+
+// Watch for changes in endDate in the roomSelectionStore and update local endDate
+watch(() => roomSelectionStore.endDate, (newEndDate) => {
+  booking.endDate = newEndDate;
+});
+
+// Watch for changes in startDate in the roomSelectionStore and update local startDate
+watch(() => roomSelectionStore.startDate, (newStartDate) => {
+  booking.startDate = newStartDate;
+});
+
+onMounted(() => {
+  roomSelectionStore.resetExtras();
+  roomSelectionStore.updateStartDate(booking.startDate || minDate.value);
+  roomSelectionStore.updateEndDate(booking.endDate || minDate.value);
+  fetchAllRooms();
+});
 </script>
 
-<style scoped>
-/* Your existing styles */
-</style>

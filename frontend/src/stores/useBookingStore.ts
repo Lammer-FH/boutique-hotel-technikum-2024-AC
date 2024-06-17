@@ -37,11 +37,11 @@ export const useBookingStore = defineStore('booking', {
     booking: {
       id: null,
       room: {
-        id: 1,
-        title: 'Aurora Suite',
-        description: 'Erleben Sie den Zauber des Nordlichts in dieser luxurioesen Suite mit spektakulärer Aussicht.',
-        guestCapacity: 2,
-        sizeSqm: 50,
+        id: 0,
+        title: '',
+        description: '',
+        guestCapacity: 0,
+        sizeSqm: 0,
       },
       guest: {
         id: null,
@@ -89,7 +89,6 @@ export const useBookingStore = defineStore('booking', {
       try {
         const guestResponse = await axios.post('http://localhost:8080/guests', this.guest);
         this.booking.guest.id = guestResponse.data.id;
-        return guestResponse.data.id;
       } catch (error) {
         console.error('There was an error creating the guest!', error);
         throw error;
