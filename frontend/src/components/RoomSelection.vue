@@ -45,6 +45,7 @@ import { useRoomSelectionStore } from '../stores/useRoomSelectionStore';
 import CustomSelect from '../components/CustomSelect.vue';
 import { IonDatetimeButton, IonModal, IonDatetime, IonButton } from '@ionic/vue';
 import { useDateChange } from '../composables/useDateChange';
+import { formatDate } from '@/utils/dateUtils';
 export default defineComponent({
   components: {
     CustomSelect,
@@ -56,14 +57,6 @@ export default defineComponent({
   setup() {
     const store = useRoomSelectionStore();
     const router = useRouter();
-
-    const formatDate = (dateString: string) => {
-      const date = new Date(dateString);
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    };
 
     const minDate = new Date().toISOString().split('T')[0]; // Today's date
 
