@@ -36,11 +36,11 @@ export const useBookingStore = defineStore ('booking', {
     booking: {
         id: null,
         room: { 
-          id: 1,
-          title: 'Aurora Suite',
-          description: 'Erleben Sie den Zauber des Nordlichts in dieser luxurioesen Suite mit spektakulärer Aussicht.',
-          guestCapacity: 2,
-          sizeSqm: 50,
+          id: 0,
+          title: '',
+          description: '',
+          guestCapacity: 0,
+          sizeSqm: 0,
         } as Room,
         guest: {
           id: null,
@@ -56,8 +56,6 @@ export const useBookingStore = defineStore ('booking', {
   actions: {
     async submitBooking(guestId: number) {
         try {
-            console.log('Booking State:', this.booking);
-            console.log('Guest ID:', this.booking.guest.id);
             if (!this.booking.guest.id) {
               throw new Error('Guest information is incomplete.');
             }
@@ -67,8 +65,6 @@ export const useBookingStore = defineStore ('booking', {
             guestId: this.booking.guest.id,
             roomId: this.booking.room ? this.booking.room.id : null,
           };
-
-          console.log('Booking Data:', bookingData);
           const bookingResponse = await axios.post('http://localhost:8080/bookings', bookingData);
           return bookingResponse.data.id;
         } catch (error) {
