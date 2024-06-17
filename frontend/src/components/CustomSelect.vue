@@ -22,13 +22,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, onMounted, onUnmounted } from 'vue';
 import { IonLabel } from '@ionic/vue';
 
 export default defineComponent({
   name: 'CustomSelect',
   components: {
-    IonLabel, // Register IonLabel as a component
+    IonLabel,
   },
   emits: ['updateExtras'],
   setup(_, { emit }) {
@@ -53,6 +53,26 @@ export default defineComponent({
       }
       emit('updateExtras', selectedOptions.value);
     };
+
+    // Close dropdown when clicking outside the component
+    const clickOutsideHandler = (event: MouseEvent) => {
+      if (dropdownOpen.value) {
+        const target = event.target as HTMLElement;
+        if (!target.closest('.custom-select')) {
+          dropdownOpen.value = false;
+        }
+      }
+    };
+
+    // Add click event listener on component mount
+    onMounted(() => {
+      document.addEventListener('click', clickOutsideHandler);
+    });
+
+    // Remove click event listener on component unmount
+    onUnmounted(() => {
+      document.removeEventListener('click', clickOutsideHandler);
+    });
 
     return { dropdownOpen, selectedOptions, options, toggleDropdown, selectOption };
   },
