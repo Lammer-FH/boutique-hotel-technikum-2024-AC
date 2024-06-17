@@ -13,7 +13,7 @@
         <label>To:</label>
         <ion-datetime-button datetime="endDatetime"></ion-datetime-button>
         <ion-modal :keep-contents-mounted="true">
-          <ion-datetime id="endDatetime" presentation="date" @ionChange="onEndDateChange" :min="minDate"></ion-datetime>
+          <ion-datetime id="endDatetime" presentation="date" @ionChange="onEndDateChange" :min="minEndDate" :value="endDate"></ion-datetime>
         </ion-modal>
       </div>
     </div>
@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useRoomSelectionStore } from '../stores/useRoomSelectionStore';
 import CustomSelect from '../components/CustomSelect.vue';
@@ -65,8 +65,23 @@ export default defineComponent({
       return `${year}-${month}-${day}`;
     };
 
+    const minDate = new Date().toISOString().split('T')[0]; // Today's date
+
+    // Using ref for minEndDate and endDate
+    const minEndDate = ref(minDate);
+    const endDate = ref('');
+
+    // Initialize endDate to default to the day after today's date
+    const today = new Date();
+    today.setDate(today.getDate() + 1); // Set to tomorrow
+    endDate.value = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+
     const onStartDateChange = (event: CustomEvent) => {
       const target = event.target as HTMLIonDatetimeElement;
+      const selectedDate = new Date(target.value);
+      selectedDate.setDate(selectedDate.getDate() + 1); // Set end date minimum to the day after start date
+      minEndDate.value = selectedDate.toISOString().split('T')[0]; // Update minEndDate
+      endDate.value = selectedDate.toISOString().split('T')[0]; // Set endDate to default to the day after start date
       const formattedDate = formatDate(String(target.value));
       store.updateStartDate(formattedDate);
     };
@@ -114,14 +129,11 @@ export default defineComponent({
       }
     };
 
-    const today = new Date(); // Get today's date
-    const minDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
-
     onMounted(() => {
       store.fetchRooms();
     });
 
-    return { store, minDate, onStartDateChange, onEndDateChange, onExtrasChange, navigateToBooking, prevPage, nextPage };
+    return { store, minDate, minEndDate, endDate, onStartDateChange, onEndDateChange, onExtrasChange, navigateToBooking, prevPage, nextPage };
   }
 });
 </script>
