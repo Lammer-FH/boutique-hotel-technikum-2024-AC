@@ -27,13 +27,13 @@
         <p>Description: {{ room.description }}</p>
         <p>Guest capacity: {{ room.guestCapacity }}</p>
         <p>Room size: {{ room.sizeSqm }}</p>
-        <ion-button @click="navigateToBooking(room.id)">Book Now</ion-button>
+        <ion-button @click="navigateToBooking(room.id)" class="custom-button">Book Now</ion-button>
       </div>
     </div>
     <div class="pagination">
-      <ion-button @click="prevPage" :disabled="store.page === 0">Previous</ion-button>
+      <ion-button @click="prevPage" :disabled="store.page === 0" class="custom-button">Previous</ion-button>
       <span>Page {{ store.page + 1 }}</span>
-      <ion-button @click="nextPage" :disabled="!store.hasMoreRooms">Next</ion-button>
+      <ion-button @click="nextPage" :disabled="!store.hasMoreRooms" class="custom-button">Next</ion-button>
     </div>
   </div>
 </template>
@@ -78,7 +78,7 @@ export default defineComponent({
 
     const onStartDateChange = (event: CustomEvent) => {
       const target = event.target as HTMLIonDatetimeElement;
-      const selectedDate = new Date(target.value);
+      const selectedDate = new Date(target.value as string);
       selectedDate.setDate(selectedDate.getDate() + 1); // Set end date minimum to the day after start date
       minEndDate.value = selectedDate.toISOString().split('T')[0]; // Update minEndDate
       endDate.value = selectedDate.toISOString().split('T')[0]; // Set endDate to default to the day after start date
@@ -181,5 +181,12 @@ export default defineComponent({
 }
 .pagination ion-button {
   margin: 0 8px;
+}
+.custom-button {
+  --background: #847e71;
+  --background-activated: #6e685e;
+  --background-focused: #6e685e;
+  --background-hover: #6e685e;
+  --color: #ffffff;
 }
 </style>
