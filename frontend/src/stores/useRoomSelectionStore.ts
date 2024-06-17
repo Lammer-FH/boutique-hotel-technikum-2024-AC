@@ -17,6 +17,7 @@ interface RoomSelectionState {
   page: number;
   size: number;
   hasMoreRooms: boolean;
+  extras: string[];
 }
 
 export const useRoomSelectionStore = defineStore('roomSelection', {
@@ -26,8 +27,9 @@ export const useRoomSelectionStore = defineStore('roomSelection', {
     startDate: '',
     endDate: '',
     page: 0,
-    size: 5, // Set the size to 5 for 5 rooms per page
+    size: 5,
     hasMoreRooms: false,
+    extras: [],
   }),
   actions: {
     async fetchRooms() {
@@ -46,6 +48,10 @@ export const useRoomSelectionStore = defineStore('roomSelection', {
           params.endDate = this.endDate;
         }
 
+        if (this.extras.length > 0) {
+          params.extras = this.extras.join(', ');
+        }
+
         const response = await axios.get('http://localhost:8080/rooms', { params });
         this.rooms = response.data;
         this.hasMoreRooms = response.data.length === this.size;
@@ -57,12 +63,17 @@ export const useRoomSelectionStore = defineStore('roomSelection', {
     },
     updateStartDate(date: string) {
       this.startDate = date;
-      this.page = 0; // Reset to first page
+      this.page = 0;
       this.fetchRooms();
     },
     updateEndDate(date: string) {
       this.endDate = date;
-      this.page = 0; // Reset to first page
+      this.page = 0;
+      this.fetchRooms();
+    },
+    updateExtras(extras: string[]) {
+      this.extras = extras;
+      this.page = 0;
       this.fetchRooms();
     },
   },
