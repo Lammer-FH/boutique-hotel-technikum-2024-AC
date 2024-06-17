@@ -7,6 +7,15 @@
       <Breadcrumb />
     </ion-header>
     <ion-content class="ion-padding">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Your Booking Summary</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <p><strong>Start Date:</strong> {{ booking.startDate }}</p>
+          <p><strong>End Date:</strong> {{ booking.endDate }}</p>
+        </ion-card-content>
+      </ion-card>
       <ion-list class="form-list">
         <form @submit.prevent="navigateToReview">
           <ion-item class="form-item">
@@ -29,31 +38,23 @@
             <ion-label>Breakfast</ion-label>
             <ion-toggle v-model="booking.breakfast"></ion-toggle>
           </ion-item>
-          <ion-item class="form-item">
-            <ion-label position="floating">Start Date</ion-label>
-            <ion-datetime display-format="YYYY-MM-DD" v-model="booking.startDate" required></ion-datetime>
-          </ion-item>
-          <ion-item class="form-item">
-            <ion-label position="floating">End Date</ion-label>
-            <ion-datetime display-format="YYYY-MM-DD" v-model="booking.endDate" required></ion-datetime>
-          </ion-item>
           <ion-button expand="full" type="submit" Submit color="secondary" class="custom-button">Next</ion-button>
         </form>
       </ion-list>
     </ion-content>
     <ion-footer>
       <ion-toolbar class="header-and-footer">
-          <ion-title>Impressum</ion-title>
+        <ion-title>Impressum</ion-title>
       </ion-toolbar>    
-  </ion-footer>
+    </ion-footer>
   </ion-page>
 </template>
 
 <script setup lang="ts">
 import { useBookingStore } from '../stores/useBookingStore';
 import Breadcrumb from '../components/Breadcrumb.vue';
-import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { ref, onMounted } from 'vue';
 import {
   IonPage,
   IonList,
@@ -74,6 +75,23 @@ const bookingStore = useBookingStore();
 const { guest, booking } = bookingStore;
 const confirmEmail = ref('');
 const router = useRouter();
+const route = useRoute();
+
+onMounted(() => {
+  const roomId = route.query.roomId as string;
+  const startDate = route.query.startDate as string;
+  const endDate = route.query.endDate as string;
+
+  if (roomId) {
+    booking.room = { id: parseInt(roomId), title: '', description: '', guestCapacity: 0, sizeSqm: 0 };
+  }
+  if (startDate) {
+    booking.startDate = startDate;
+  }
+  if (endDate) {
+    booking.endDate = endDate;
+  }
+});
 
 const navigateToReview = () => {
   if (guest.email.trim().toLowerCase() !== confirmEmail.value.trim().toLowerCase()) {
@@ -81,85 +99,10 @@ const navigateToReview = () => {
     return;
   }
 
-  if (booking.startDate == "" || booking.endDate == "") {
-    alert('A date is missing');
-    return;
-  }
   router.push('/bookingreview');
 };
 </script>
 
 <style scoped>
-
-.ion-content {
-  --background: #f7f3e9;
-}
-
-.form-item {
-  margin-bottom: 15px;
-}
-
-.form-list {
-  margin: 0 auto;
-  max-width: 600px;
-  background: #f7f3e9;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.hotel-image {
-    width: 100%;
-    max-width: 600px;
-    height: auto;
-    margin: 20px auto;
-    border-radius: 15px;
-}
-
-.header-and-footer {
-    --background: #e0d9c8;
-    text-align: center;
-}
-
-.custom-button {
-    --background: #847e71;
-    --background-activated: #6e685e;
-    --background-focused: #6e685e;
-    --background-hover: #6e685e;
-    --color: #ffffff;
-}
-
-.position-button {
-    margin-top: 10px; 
-}
-
-h1 {
-    font-size: 24px;
-    font-weight: bold;
-    margin: 20px 0 10px;
-}
-
-h2 {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 20px 0 10px;
-}
-
-ion-card {
-    margin: 20px 0;
-}
-
-ion-button {
-    margin-top: 20px;
-}
-
-ion-footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    z-index: 10;
-}
-
-
-
+/* your styles here */
 </style>

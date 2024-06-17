@@ -5,6 +5,7 @@ import RoomSelectionPage from '../views/RoomSelectionPage.vue';
 import BookingForm from '../components/BookingForm.vue';
 import BookingConfirmation from '../components/BookingConfirmation.vue';
 import BookingReview from '../components/BookingReview.vue';
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -23,7 +24,12 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/booking',
     name: 'BookingForm',
-    component: BookingForm
+    component: BookingForm,
+    props: route => ({
+      roomId: route.query.roomId,
+      startDate: route.query.startDate,
+      endDate: route.query.endDate
+    })
   },
   {
     path: '/bookingreview',

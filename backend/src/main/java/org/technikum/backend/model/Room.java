@@ -38,7 +38,7 @@ public class Room {
     @JoinTable(
             name = "room_has_extra",
             joinColumns = @JoinColumn(name = "room_id"),
-            inverseJoinColumns = @JoinColumn( name = "extra_id")
+            inverseJoinColumns = @JoinColumn(name = "extra_id")
     )
     private List<Extra> extras;
 }

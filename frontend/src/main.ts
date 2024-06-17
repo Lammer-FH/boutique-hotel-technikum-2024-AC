@@ -3,6 +3,7 @@ import App from './App.vue';
 import { IonicVue } from '@ionic/vue';
 import { createPinia } from 'pinia';
 import router from './router';
+import './assets/style.css';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
