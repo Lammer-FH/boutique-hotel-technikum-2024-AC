@@ -37,9 +37,10 @@ const routes: Array<RouteRecordRaw> = [
     component: BookingReview
   },
   {
-    path: '/confirmation',
+    path: '/bookings/:id',
     name: 'BookingConfirmation',
-    component: BookingConfirmation
+    component: BookingConfirmation,
+    props: true,
   }
 ]
 

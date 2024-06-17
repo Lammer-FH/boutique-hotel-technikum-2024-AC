@@ -27,6 +27,7 @@ type Booking = {
 
 export const useBookingStore = defineStore('booking', {
   state: () => ({
+    loading: true,
     guest: {
       id: null,
       firstName: '',
@@ -54,6 +55,17 @@ export const useBookingStore = defineStore('booking', {
     } as Booking
   }),
   actions: {
+    async loadBooking(bookingId: number) {
+      try {
+        this.loading = true;
+        const bookingResponse = await axios.get(`http://localhost:8080/bookings/${bookingId}`);
+        this.booking = bookingResponse.data;
+      } catch (error) {
+        console.error('There was an error loading the booking!', error);
+      } finally {
+        this.loading = false;
+      }
+    },
     async submitBooking() {
       try {
         if (!this.booking.guest.id) {

@@ -2,58 +2,62 @@
     <ion-page>
       <ion-header>
         <ion-toolbar class="header-and-footer">
-          <ion-title>Your booking has been confirmed!</ion-title>
+          <ion-title>Booking (ID: {{ bookingId }})</ion-title>
         </ion-toolbar>
         <Breadcrumb />
       </ion-header>
       <ion-content class="ion-padding">
         <div class="container">
-
-          <!-- Summary -->
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>Summary</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              <p><strong>First Name:</strong> {{ guest.firstName }}</p>
-              <p><strong>Last Name:</strong> {{ guest.lastName }}</p>
-              <p><strong>Email:</strong> {{ guest.email }}</p>
-              <p><strong>Breakfast:</strong> {{ booking.breakfast ? 'Yes' : 'No' }}</p>
-              <p><strong>Start Date:</strong> {{ booking.startDate }}</p>
-              <p><strong>End Date:</strong> {{ booking.endDate }}</p>
-            </ion-card-content>
-          </ion-card>
-
-          <div v-if="booking.room">
-            <RoomCard :room="booking.room" />
+          <div v-if="store.loading">
+            Loading the Booking...
           </div>
+          <div v-else>
+            <!-- Summary -->
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title>Summary</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <p><strong>First Name:</strong> {{ store.booking.guest.firstName }}</p>
+                <p><strong>Last Name:</strong> {{ store.booking.guest.lastName }}</p>
+                <p><strong>Email:</strong> {{ store.booking.guest.email }}</p>
+                <p><strong>Breakfast:</strong> {{ store.booking.breakfast ? 'Yes' : 'No' }}</p>
+                <p><strong>Start Date:</strong> {{ store.booking.startDate }}</p>
+                <p><strong>End Date:</strong> {{ store.booking.endDate }}</p>
+              </ion-card-content>
+            </ion-card>
 
-          <!-- Maps -->
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>How to get there?</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              <GoogleMaps />
-            </ion-card-content>
-          </ion-card>
+            <div v-if="store.booking.room">
+              <RoomCard :room="store.booking.room" />
+            </div>
 
-          <!-- Contact -->
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>Contact</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              <p><strong>E-Mail:</strong> <a href="mailto:support@technikum-botique.at">support@technikum-botique.at</a></p>
-              <p><strong>Telephone:</strong> +43 664 123 456</p>
-            </ion-card-content>
-          </ion-card>
+            <!-- Maps -->
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title>How to get there?</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <GoogleMaps />
+              </ion-card-content>
+            </ion-card>
+
+            <!-- Contact -->
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title>Contact</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <p><strong>E-Mail:</strong> <a href="mailto:support@technikum-botique.at">support@technikum-botique.at</a></p>
+                <p><strong>Telephone:</strong> +43 664 123 456</p>
+              </ion-card-content>
+            </ion-card>
+          </div>
         </div>
       </ion-content>
     </ion-page>
-  </template>
+</template>
   
-  <script setup lang="ts">
+<script lang="ts">
   import { useBookingStore } from '../stores/useBookingStore';
   import Breadcrumb from '../components/Breadcrumb.vue';
   import GoogleMaps from '../components/GoogleMaps.vue';
@@ -69,10 +73,38 @@
     IonCardContent,
     IonCardTitle
   } from '@ionic/vue';
-  
-  const bookingStore = useBookingStore();
-  const { guest, booking } = bookingStore;
-  </script>
+  import { useRoute } from 'vue-router';
+  import { onMounted } from 'vue';
+
+  export default {
+    components: {
+      Breadcrumb,
+      GoogleMaps,
+      RoomCard,
+      IonPage,
+      IonHeader,
+      IonToolbar,
+      IonTitle,
+      IonContent,
+      IonCard,
+      IonCardHeader,
+      IonCardContent,
+      IonCardTitle
+    },
+    setup: () => {
+      const route = useRoute();
+      const store = useBookingStore();
+
+      const bookingId = Array.isArray(route.params.id) ? Number(route.params.id[0]) : Number(route.params.id);
+
+      onMounted(() => {
+        store.loadBooking(bookingId);
+      });
+      
+      return { store, bookingId };
+    },
+  }
+</script>
   
   <style scoped>
     .container {

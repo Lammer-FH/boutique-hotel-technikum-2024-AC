@@ -67,7 +67,6 @@ import {
   IonLabel,
   IonInput,
   IonToggle,
-  IonDatetime,
   IonCard,
   IonCardHeader,
   IonCardTitle,
@@ -81,9 +80,9 @@ const editMode = ref(false);
 
 const updateBooking = async () => {
   try {
-    const guestId = await bookingStore.submitGuest();
-    await bookingStore.submitBooking(guestId);
-    router.push('/confirmation');
+    await bookingStore.submitGuest();
+    const bookingId = await bookingStore.submitBooking();
+    router.push(`/bookings/${bookingId}`);
   } catch (error) {
     console.error('There was an error updating the booking!', error);
   }
