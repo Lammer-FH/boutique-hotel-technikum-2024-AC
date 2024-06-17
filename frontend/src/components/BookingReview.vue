@@ -32,14 +32,14 @@
                 <label>From:</label>
                 <ion-datetime-button datetime="startDatetime"></ion-datetime-button>
                 <ion-modal :keep-contents-mounted="true">
-                  <ion-datetime id="startDatetime" presentation="date" @ionChange="onStartDateChange" :min="minDate" :value="booking.startDate"></ion-datetime>
+                  <ion-datetime id="startDatetime" presentation="date" @ionChange="onStartDateChange" :min="minDate" v-model="booking.startDate"></ion-datetime>
                 </ion-modal>
               </div>
               <div class="datepicker-item">
                 <label>To:</label>
                 <ion-datetime-button datetime="endDatetime"></ion-datetime-button>
                 <ion-modal :keep-contents-mounted="true">
-                  <ion-datetime id="endDatetime" presentation="date" @ionChange="onEndDateChange" :min="minEndDate" :value="booking.endDate"></ion-datetime>
+                  <ion-datetime id="endDatetime" presentation="date" @ionChange="onEndDateChange" :min="minEndDate" v-model="booking.endDate"></ion-datetime>
                 </ion-modal>
               </div>
             </div>
@@ -80,7 +80,7 @@
 
 <script setup lang="ts">
 import { useBookingStore } from '../stores/useBookingStore';
-import { useRoomSelectionStore, Room } from '../stores/useRoomSelectionStore'; // Ensure Room is imported
+import { useRoomSelectionStore, Room } from '../stores/useRoomSelectionStore';
 import { ref, onMounted, watch } from 'vue';
 import { useDateChange } from '../composables/useDateChange';
 import { useRouter } from 'vue-router';
@@ -112,7 +112,7 @@ const roomSelectionStore = useRoomSelectionStore();
 const { guest, booking } = bookingStore;
 const router = useRouter();
 const editMode = ref(false);
-const minDate = new Date().toISOString().split('T')[0]; // Today's date
+const minDate = ref(new Date().toISOString().split('T')[0]); // Today's date as a reactive ref
 const selectedRoomId = ref(booking.room?.id);
 const availableRooms = ref([] as Room[]);
 
@@ -151,10 +151,21 @@ watch(selectedRoomId, (newRoomId) => {
   }
 });
 
+// Watch for changes in endDate in the roomSelectionStore and update local endDate
+watch(() => roomSelectionStore.endDate, (newEndDate) => {
+  booking.endDate = newEndDate;
+});
+
+// Watch for changes in startDate in the roomSelectionStore and update local startDate
+watch(() => roomSelectionStore.startDate, (newStartDate) => {
+  booking.startDate = newStartDate;
+});
+
 onMounted(() => {
   // Prefill store with default values
-  roomSelectionStore.updateStartDate(booking.startDate || minDate);
-  roomSelectionStore.updateEndDate(booking.endDate || minDate);
+  roomSelectionStore.updateStartDate(booking.startDate || minDate.value);
+  roomSelectionStore.updateEndDate(booking.endDate || minDate.value);
   fetchAllRooms();
 });
 </script>
+
