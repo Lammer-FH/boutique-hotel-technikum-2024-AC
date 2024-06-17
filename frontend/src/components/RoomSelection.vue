@@ -21,13 +21,8 @@
     <!-- Room display and pagination -->
     <div v-if="store.loading" class="loading">Loading...</div>
     <div v-else class="rooms-grid">
-      <div v-for="room in store.rooms" :key="room.id" class="room-card">
-        <img :src="`/images/rooms/room${room.id}.png`" alt="Room Image" class="room-image">
-        <h3>{{ room.title }}</h3>
-        <p>Description: {{ room.description }}</p>
-        <p>Guest capacity: {{ room.guestCapacity }}</p>
-        <p>Room size: {{ room.sizeSqm }}</p>
-        <ion-button @click="navigateToBooking(room.id)" class="custom-button">Book Now</ion-button>
+      <div v-for="room in store.rooms" :key="room.id">
+        <RoomCard :room="room" :on-click="navigateToBooking" />
       </div>
     </div>
     <div class="pagination">
@@ -43,6 +38,7 @@ import { defineComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useRoomSelectionStore } from '../stores/useRoomSelectionStore';
 import CustomSelect from '../components/CustomSelect.vue';
+import RoomCard from '../components/RoomCard.vue';
 import { IonDatetimeButton, IonModal, IonDatetime, IonButton } from '@ionic/vue';
 
 export default defineComponent({
@@ -51,7 +47,8 @@ export default defineComponent({
     IonDatetimeButton,
     IonModal,
     IonDatetime,
-    IonButton
+    IonButton,
+    RoomCard,
   },
   setup() {
     const store = useRoomSelectionStore();
@@ -173,17 +170,6 @@ export default defineComponent({
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 16px;
-}
-.room-card {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 16px;
-  text-align: center;
-}
-.room-image {
-  max-width: 100%;
-  border-radius: 8px;
-  margin-bottom: 16px;
 }
 .pagination {
   display: flex;

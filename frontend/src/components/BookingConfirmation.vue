@@ -24,17 +24,9 @@
             </ion-card-content>
           </ion-card>
 
-          <!-- Room -->
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>Your Room</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              <p><strong>Name:</strong> {{ booking.room?.title }}</p>
-              <p><strong>Description:</strong> {{ booking.room?.description }}</p>
-              <p><strong>Size:</strong> {{ booking.room?.sizeSqm }}m<sup>2</sup></p>
-            </ion-card-content>
-          </ion-card>
+          <div v-if="booking.room">
+            <RoomCard :room="booking.room" />
+          </div>
 
           <!-- Maps -->
           <ion-card>
@@ -65,6 +57,7 @@
   import { useBookingStore } from '../stores/useBookingStore';
   import Breadcrumb from '../components/Breadcrumb.vue';
   import GoogleMaps from '../components/GoogleMaps.vue';
+  import RoomCard from './RoomCard.vue';
   import {
     IonPage,
     IonHeader,
