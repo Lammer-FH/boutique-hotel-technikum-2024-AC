@@ -5,38 +5,56 @@
                 <ion-title>Boutique Hotel Technikum</ion-title>
             </ion-toolbar>
         </ion-header>
-        <div class="container">
-            <img src="@/assets/logo.png" alt="Technikum Booking Logo" class="hotel-image" />
-            <h1 style="text-align: center;">Willkommen im Boutique Hotel Technikum</h1>
 
-            <ion-card>
-                <ion-card-content style="background-color:#f7f3e9;">Erleben Sie Luxus und Komfort in unserem exklusiven Hotel am Strand. Ob für einen
-                    romantischen Kurzurlaub, einen Familienurlaub oder eine Geschäftsreise, unser Hotel bietet die
-                    perfekte Unterkunft für jeden Anlass.</ion-card-content>
-            </ion-card>
-            <h2>Erleben Sie einen unvergesslichen Aufenthalt</h2>
+        <ion-content :fullscreen="true" class="ion-padding">
+            <div class="container">
+                <img src="@/assets/logo.png" alt="Technikum Booking Logo" class="hotel-image" />
+                <h1 style="text-align: center;">Willkommen im Boutique Hotel Technikum</h1>
 
-            <ion-card>
-                <ion-card-content style="background-color:#f7f3e9;">
-                    Genießen sie den Komfort und die Annehmlichkeiten unserer erstklassigen Zimmer und Suiten.
-                </ion-card-content>
-            </ion-card>
-            <ion-button class="custom-button position-button" expand="block" @click="goToRooms">Book now!</ion-button>
-        </div>
+                <ion-card>
+                    <ion-card-content style="background-color:#f7f3e9;">Erleben Sie Luxus und Komfort in unserem
+                        exklusiven Hotel am Strand. Ob für einen
+                        romantischen Kurzurlaub, einen Familienurlaub oder eine Geschäftsreise, unser Hotel bietet die
+                        perfekte Unterkunft für jeden Anlass.</ion-card-content>
+                </ion-card>
+                <h2>Erleben Sie einen unvergesslichen Aufenthalt</h2>
+
+                <ion-card>
+                    <ion-card-content style="background-color:#f7f3e9;">
+                        Genießen sie den Komfort und die Annehmlichkeiten unserer erstklassigen Zimmer und Suiten.
+                    </ion-card-content>
+                </ion-card>
+                <ion-button class="custom-button position-button" expand="block" @click="goToRooms">Book
+                    now!</ion-button>
+            </div>
+        </ion-content>
 
         <ion-footer>
             <ion-toolbar class="header-and-footer">
                 <ion-title>Impressum</ion-title>
-            </ion-toolbar>    
+            </ion-toolbar>
         </ion-footer>
 
     </ion-page>
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
+import { IonHeader, IonPage, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonButton, IonFooter } from '@ionic/vue';
 
-export default {
+export default defineComponent({
+    components: {
+        IonHeader,
+        IonPage,
+        IonToolbar,
+        IonTitle,
+        IonContent,
+        IonCard,
+        IonCardContent,
+        IonButton,
+        IonFooter
+    },
     name: 'LandingPage',
     setup() {
         const router = useRouter();
@@ -45,7 +63,7 @@ export default {
         };
         return { goToRooms };
     }
-}
+});
 </script>
 
 <style scoped>
@@ -82,7 +100,7 @@ export default {
 }
 
 .position-button {
-    margin-top: 10px; 
+    margin-top: 10px;
 }
 
 h1 {
@@ -111,7 +129,4 @@ ion-footer {
     width: 100%;
     z-index: 10;
 }
-
-
-
 </style>
