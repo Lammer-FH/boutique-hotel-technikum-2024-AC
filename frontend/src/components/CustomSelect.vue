@@ -1,6 +1,6 @@
 <template>
   <div class="select-container">
-    <ion-label>Extras</ion-label>
+    <IonLabel>Extras</IonLabel>
     <div class="custom-select">
       <div class="selected-option" @click="toggleDropdown">
         <span v-if="!selectedOptions.length">Select Options</span>
@@ -27,6 +27,9 @@ import { IonLabel } from '@ionic/vue';
 
 export default defineComponent({
   name: 'CustomSelect',
+  components: {
+    IonLabel, // Register IonLabel as a component
+  },
   emits: ['updateExtras'],
   setup(_, { emit }) {
     const dropdownOpen = ref(false);
