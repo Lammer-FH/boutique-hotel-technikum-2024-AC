@@ -6,7 +6,7 @@
         <label>From:</label>
         <ion-datetime-button datetime="startDatetime"></ion-datetime-button>
         <ion-modal :keep-contents-mounted="true">
-          <ion-datetime id="startDatetime" presentation="date" @ionChange="onStartDateChange" :min="minDate"></ion-datetime>
+          <ion-datetime id="startDatetime" presentation="date" @ionChange="onStartDateChange" :min="minDate" :value="startDate"></ion-datetime>
         </ion-modal>
       </div>
       <div class="datepicker-item">
@@ -76,6 +76,9 @@ export default defineComponent({
     today.setDate(today.getDate() + 1); // Set to tomorrow
     endDate.value = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
 
+    // Initialize startDate to current date
+    const startDate = ref(formatDate(new Date().toISOString()));
+
     const onStartDateChange = (event: CustomEvent) => {
       const target = event.target as HTMLIonDatetimeElement;
       const selectedDate = new Date(target.value as string);
@@ -83,7 +86,8 @@ export default defineComponent({
       minEndDate.value = selectedDate.toISOString().split('T')[0]; // Update minEndDate
       endDate.value = selectedDate.toISOString().split('T')[0]; // Set endDate to default to the day after start date
       const formattedDate = formatDate(String(target.value));
-      store.updateStartDate(formattedDate);
+      store.updateStartDate(formattedDate); // Update startDate in store
+      store.updateEndDate(endDate.value); // Update endDate in store
     };
 
     const onEndDateChange = (event: CustomEvent) => {
@@ -130,10 +134,13 @@ export default defineComponent({
     };
 
     onMounted(() => {
+      // Prefill store with default values
+      store.updateStartDate(startDate.value);
+      store.updateEndDate(endDate.value);
       store.fetchRooms();
     });
 
-    return { store, minDate, minEndDate, endDate, onStartDateChange, onEndDateChange, onExtrasChange, navigateToBooking, prevPage, nextPage };
+    return { store, minDate, minEndDate, endDate, startDate, onStartDateChange, onEndDateChange, onExtrasChange, navigateToBooking, prevPage, nextPage };
   }
 });
 </script>
