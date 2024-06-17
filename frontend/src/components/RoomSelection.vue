@@ -6,14 +6,14 @@
         <label>From:</label>
         <ion-datetime-button datetime="startDatetime"></ion-datetime-button>
         <ion-modal :keep-contents-mounted="true">
-          <ion-datetime id="startDatetime" presentation="date" @ionChange="onStartDateChange"></ion-datetime>
+          <ion-datetime id="startDatetime" presentation="date" @ionChange="onStartDateChange" :min="minDate"></ion-datetime>
         </ion-modal>
       </div>
       <div class="datepicker-item">
         <label>To:</label>
         <ion-datetime-button datetime="endDatetime"></ion-datetime-button>
         <ion-modal :keep-contents-mounted="true">
-          <ion-datetime id="endDatetime" presentation="date" @ionChange="onEndDateChange"></ion-datetime>
+          <ion-datetime id="endDatetime" presentation="date" @ionChange="onEndDateChange" :min="minDate"></ion-datetime>
         </ion-modal>
       </div>
     </div>
@@ -44,7 +44,6 @@ import { useRouter } from 'vue-router';
 import { useRoomSelectionStore } from '../stores/useRoomSelectionStore';
 import CustomSelect from '../components/CustomSelect.vue';
 import { IonDatetimeButton, IonModal, IonDatetime, IonButton } from '@ionic/vue';
-import { IonLabel } from '@ionic/vue';
 
 export default defineComponent({
   components: {
@@ -115,11 +114,14 @@ export default defineComponent({
       }
     };
 
+    const today = new Date(); // Get today's date
+    const minDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+
     onMounted(() => {
       store.fetchRooms();
     });
 
-    return { store, onStartDateChange, onEndDateChange, onExtrasChange, navigateToBooking, prevPage, nextPage };
+    return { store, minDate, onStartDateChange, onEndDateChange, onExtrasChange, navigateToBooking, prevPage, nextPage };
   }
 });
 </script>
