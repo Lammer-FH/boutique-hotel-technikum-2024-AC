@@ -44,7 +44,7 @@ import { useRouter } from 'vue-router';
 import { useRoomSelectionStore } from '../stores/useRoomSelectionStore';
 import CustomSelect from '../components/CustomSelect.vue';
 import { IonDatetimeButton, IonModal, IonDatetime, IonButton } from '@ionic/vue';
-
+import { useDateChange } from '../composables/useDateChange';
 export default defineComponent({
   components: {
     CustomSelect,
@@ -68,7 +68,6 @@ export default defineComponent({
     const minDate = new Date().toISOString().split('T')[0]; // Today's date
 
     // Using ref for minEndDate and endDate
-    const minEndDate = ref(minDate);
     const endDate = ref('');
 
     // Initialize endDate to default to the day after today's date
@@ -76,25 +75,9 @@ export default defineComponent({
     today.setDate(today.getDate() + 1); // Set to tomorrow
     endDate.value = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
 
+    const { minEndDate, onStartDateChange, onEndDateChange } = useDateChange();
     // Initialize startDate to current date
     const startDate = ref(formatDate(new Date().toISOString()));
-
-    const onStartDateChange = (event: CustomEvent) => {
-      const target = event.target as HTMLIonDatetimeElement;
-      const selectedDate = new Date(target.value as string);
-      selectedDate.setDate(selectedDate.getDate() + 1); // Set end date minimum to the day after start date
-      minEndDate.value = selectedDate.toISOString().split('T')[0]; // Update minEndDate
-      endDate.value = selectedDate.toISOString().split('T')[0]; // Set endDate to default to the day after start date
-      const formattedDate = formatDate(String(target.value));
-      store.updateStartDate(formattedDate); // Update startDate in store
-      store.updateEndDate(endDate.value); // Update endDate in store
-    };
-
-    const onEndDateChange = (event: CustomEvent) => {
-      const target = event.target as HTMLIonDatetimeElement;
-      const formattedDate = formatDate(String(target.value));
-      store.updateEndDate(formattedDate);
-    };
 
     const onExtrasChange = (extras: string[]) => {
       store.updateExtras(extras);

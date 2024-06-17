@@ -82,6 +82,7 @@
 import { useBookingStore } from '../stores/useBookingStore';
 import { useRoomSelectionStore, Room } from '../stores/useRoomSelectionStore'; // Ensure Room is imported
 import { ref, onMounted, watch } from 'vue';
+import { useDateChange } from '../composables/useDateChange';
 import { useRouter } from 'vue-router';
 import {
   IonPage,
@@ -112,36 +113,10 @@ const { guest, booking } = bookingStore;
 const router = useRouter();
 const editMode = ref(false);
 const minDate = new Date().toISOString().split('T')[0]; // Today's date
-const minEndDate = ref(minDate);
 const selectedRoomId = ref(booking.room?.id);
 const availableRooms = ref([] as Room[]);
 
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-};
-
-const onStartDateChange = (event: CustomEvent) => {
-  const target = event.target as HTMLIonDatetimeElement;
-  const selectedDate = new Date(target.value as string);
-  selectedDate.setDate(selectedDate.getDate() + 1); // Set end date minimum to the day after start date
-  minEndDate.value = selectedDate.toISOString().split('T')[0]; // Update minEndDate
-  booking.startDate = formatDate(String(target.value));
-  booking.endDate = formatDate(selectedDate.toISOString()); // Set endDate to default to the day after start date
-  roomSelectionStore.updateStartDate(booking.startDate); // Update startDate in store
-  roomSelectionStore.updateEndDate(booking.endDate); // Update endDate in store
-  fetchAllRooms(); // Fetch all available rooms
-};
-
-const onEndDateChange = (event: CustomEvent) => {
-  const target = event.target as HTMLIonDatetimeElement;
-  booking.endDate = formatDate(String(target.value));
-  roomSelectionStore.updateEndDate(booking.endDate);
-  fetchAllRooms(); // Fetch all available rooms
-};
+const { minEndDate, onStartDateChange, onEndDateChange } = useDateChange();
 
 const updateBooking = async () => {
   try {
