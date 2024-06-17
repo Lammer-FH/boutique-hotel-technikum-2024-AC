@@ -157,9 +157,14 @@ export default defineComponent({
 .datepicker-item {
   flex: 1;
   margin-right: 16px;
+  display: flex;
+  align-items: center;
 }
 .datepicker-item:last-child {
   margin-right: 0;
+}
+.datepicker-item label {
+  margin-right: 8px;
 }
 .loading {
   text-align: center;
