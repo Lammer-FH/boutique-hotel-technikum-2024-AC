@@ -162,7 +162,7 @@ watch(() => roomSelectionStore.startDate, (newStartDate) => {
 });
 
 onMounted(() => {
-  // Prefill store with default values
+  roomSelectionStore.resetExtras();
   roomSelectionStore.updateStartDate(booking.startDate || minDate.value);
   roomSelectionStore.updateEndDate(booking.endDate || minDate.value);
   fetchAllRooms();
