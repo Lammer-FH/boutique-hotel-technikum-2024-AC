@@ -43,14 +43,14 @@
                 </ion-modal>
               </div>
             </div>
-          </ion-item>
-          <ion-item class="form-item">
-            <ion-label>Room Number</ion-label>
-            <ion-select v-model="selectedRoomId" interface="popover" placeholder="Select Room">
-              <ion-select-option v-for="room in roomSelectionStore.rooms" :key="room.id" :value="room.id">
-                {{ room.title }} (Room ID: {{ room.id }})
-              </ion-select-option>
-            </ion-select>
+            <ion-item class="form-item">
+              <ion-label>Room Number</ion-label>
+              <ion-select v-model="selectedRoomId" interface="popover" placeholder="Select Room">
+                <ion-select-option v-for="room in availableRooms" :key="room.id" :value="room.id">
+                  {{ room.title }} (Room ID: {{ room.id }})
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
           </ion-item>
           <ion-item class="form-item">
             <ion-label position="floating">First Name</ion-label>
@@ -80,7 +80,7 @@
 
 <script setup lang="ts">
 import { useBookingStore } from '../stores/useBookingStore';
-import { useRoomSelectionStore } from '../stores/useRoomSelectionStore';
+import { useRoomSelectionStore, Room } from '../stores/useRoomSelectionStore'; // Ensure Room is imported
 import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import {
@@ -114,6 +114,7 @@ const editMode = ref(false);
 const minDate = new Date().toISOString().split('T')[0]; // Today's date
 const minEndDate = ref(minDate);
 const selectedRoomId = ref(booking.room?.id);
+const availableRooms = ref([] as Room[]);
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -132,12 +133,14 @@ const onStartDateChange = (event: CustomEvent) => {
   booking.endDate = formatDate(selectedDate.toISOString()); // Set endDate to default to the day after start date
   roomSelectionStore.updateStartDate(booking.startDate); // Update startDate in store
   roomSelectionStore.updateEndDate(booking.endDate); // Update endDate in store
+  fetchAllRooms(); // Fetch all available rooms
 };
 
 const onEndDateChange = (event: CustomEvent) => {
   const target = event.target as HTMLIonDatetimeElement;
   booking.endDate = formatDate(String(target.value));
   roomSelectionStore.updateEndDate(booking.endDate);
+  fetchAllRooms(); // Fetch all available rooms
 };
 
 const updateBooking = async () => {
@@ -150,9 +153,26 @@ const updateBooking = async () => {
   }
 };
 
+const fetchAllRooms = async () => {
+  let fetchMore = true;
+  availableRooms.value = [];
+  roomSelectionStore.page = 0;
+
+  while (fetchMore) {
+    await roomSelectionStore.fetchRooms();
+    if (roomSelectionStore.rooms.length > 0) {
+      availableRooms.value = [...availableRooms.value, ...roomSelectionStore.rooms];
+      fetchMore = roomSelectionStore.rooms.length === roomSelectionStore.size;
+      roomSelectionStore.page += 1;
+    } else {
+      fetchMore = false;
+    }
+  }
+};
+
 watch(selectedRoomId, (newRoomId) => {
   if (newRoomId !== undefined) {
-    booking.room = roomSelectionStore.rooms.find(room => room.id === newRoomId) || null;
+    booking.room = availableRooms.value.find(room => room.id === newRoomId) || null;
   }
 });
 
@@ -160,9 +180,6 @@ onMounted(() => {
   // Prefill store with default values
   roomSelectionStore.updateStartDate(booking.startDate || minDate);
   roomSelectionStore.updateEndDate(booking.endDate || minDate);
+  fetchAllRooms();
 });
 </script>
-
-<style scoped>
-/* Your existing styles */
-</style>
