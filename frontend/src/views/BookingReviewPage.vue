@@ -32,56 +32,34 @@
       </ion-card>
       <ion-list class="form-list" v-if="editMode">
         <form @submit.prevent="updateBooking">
-          <ion-item class="date-picker">
+          <div class="date-and-dropdown-container">
             <div class="datepicker-container">
               <div class="datepicker-item">
                 <label>From:</label>
-                <ion-datetime-button
-                  datetime="startDatetime"
-                ></ion-datetime-button>
+                <ion-datetime-button datetime="startDatetime"></ion-datetime-button>
                 <ion-modal :keep-contents-mounted="true">
-                  <ion-datetime
-                    id="startDatetime"
-                    presentation="date"
-                    @ionChange="onStartDateChange"
-                    :min="minDate"
-                    v-model="booking.startDate"
-                  ></ion-datetime>
+                  <ion-datetime id="startDatetime" presentation="date" @ionChange="onStartDateChange" :min="minDate" v-model="booking.startDate"></ion-datetime>
                 </ion-modal>
               </div>
               <div class="datepicker-item">
                 <label>To:</label>
-                <ion-datetime-button
-                  datetime="endDatetime"
-                ></ion-datetime-button>
+                <ion-datetime-button datetime="endDatetime"></ion-datetime-button>
                 <ion-modal :keep-contents-mounted="true">
-                  <ion-datetime
-                    id="endDatetime"
-                    presentation="date"
-                    @ionChange="onEndDateChange"
-                    :min="minEndDate"
-                    v-model="booking.endDate"
-                  ></ion-datetime>
+                  <ion-datetime id="endDatetime" presentation="date" @ionChange="onEndDateChange" :min="minEndDate" v-model="booking.endDate"></ion-datetime>
                 </ion-modal>
               </div>
             </div>
-            <ion-item class="form-item">
-              <ion-label>Room Number</ion-label>
-              <ion-select
-                v-model="selectedRoomId"
-                interface="popover"
-                placeholder="Select Room"
-              >
-                <ion-select-option
-                  v-for="room in availableRooms"
-                  :key="room.id"
-                  :value="room.id"
-                >
-                  {{ room.title }} (Room ID: {{ room.id }})
-                </ion-select-option>
-              </ion-select>
-            </ion-item>
-          </ion-item>
+            <div class="dropdown-container">
+              <ion-item class="form-item">
+                <ion-label>Room</ion-label>
+                <ion-select v-model="selectedRoomId" interface="popover" placeholder="Select Room">
+                  <ion-select-option v-for="room in availableRooms" :key="room.id" :value="room.id">
+                    {{ room.title }}, Nr. {{ room.id }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </div>
+          </div>
           <ion-item class="form-item">
             <ion-label position="floating">First Name</ion-label>
             <ion-input v-model="guest.firstName" required></ion-input>
@@ -221,3 +199,27 @@ onMounted(() => {
   fetchAllRooms();
 });
 </script>
+
+<style>
+.date-and-dropdown-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.datepicker-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.datepicker-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-container {
+  display: flex;
+  flex-direction: column;
+}
+</style>
