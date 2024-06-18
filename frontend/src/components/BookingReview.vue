@@ -4,6 +4,7 @@
       <ion-toolbar class="header-and-footer">
         <ion-title>Review Your Booking</ion-title>
       </ion-toolbar>
+      <BackButton />
     </ion-header>
     <ion-content class="ion-padding">
       <ion-card>
@@ -79,6 +80,7 @@ import { useRoomSelectionStore, Room } from '../stores/useRoomSelectionStore';
 import { ref, onMounted, watch } from 'vue';
 import { useDateChange } from '../composables/useDateChange';
 import { useRouter } from 'vue-router';
+import BackButton from '../components/BackButton.vue';
 import {
   IonPage,
   IonList,
