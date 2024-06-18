@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
 import LandingPage from '../views/LandingPage.vue';
-import Impressum from '../views/Impressum.vue';
-import About from '../views/About.vue';
+import ImpressumPage from '../views/ImpressumPage.vue';
+import AboutPage from '../views/AboutPage.vue';
 import RoomSelectionPage from '../views/RoomSelectionPage.vue';
-import BookingForm from '../components/BookingForm.vue';
-import BookingConfirmation from '../components/BookingConfirmation.vue';
-import BookingReview from '../components/BookingReview.vue';
+import BookingPage from '../views/BookingPage.vue';
+import BookingConfirmationPage from '../views/BookingConfirmationPage.vue';
+import BookingReviewPage from '../views/BookingReviewPage.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -15,28 +15,28 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/landing',
-    name: 'Landing',
+    name: 'LandingPage',
     component: LandingPage
   },
   {
     path: '/impressum',
-    name: 'Impressum',
-    component: Impressum
+    name: 'ImpressumPage',
+    component: ImpressumPage
   },
   {
     path: '/about',
-    name: 'About',
-    component: About
+    name: 'AboutPage',
+    component: AboutPage
   },
   {
     path: '/rooms',
-    name: 'Rooms',
+    name: 'RoomSelectionPage',
     component: RoomSelectionPage
   },
   {
     path: '/booking',
-    name: 'BookingForm',
-    component: BookingForm,
+    name: 'BookingPage',
+    component: BookingPage,
     props: route => ({
       roomId: route.query.roomId,
       startDate: route.query.startDate,
@@ -45,13 +45,14 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/bookingreview',
-    name: 'BookingReview',
-    component: BookingReview
+    name: 'BookingReviewPage',
+    component: BookingReviewPage
   },
   {
-    path: '/confirmation',
-    name: 'BookingConfirmation',
-    component: BookingConfirmation
+    path: '/bookings/:id',
+    name: 'BookingConfirmationPage',
+    component: BookingConfirmationPage,
+    props: true,
   }
 ]
 

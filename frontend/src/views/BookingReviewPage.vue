@@ -75,94 +75,97 @@
 </template>
 
 <script setup lang="ts">
-import { useBookingStore } from '../stores/useBookingStore';
-import { useRoomSelectionStore, Room } from '../stores/useRoomSelectionStore';
-import { ref, onMounted, watch } from 'vue';
-import { useDateChange } from '../composables/useDateChange';
-import { useRouter } from 'vue-router';
-import BackButton from '../components/BackButton.vue';
-import {
-  IonPage,
-  IonList,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonButton,
-  IonContent,
-  IonItem,
-  IonLabel,
-  IonInput,
-  IonToggle,
-  IonDatetime,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardContent,
-  IonSelect,
-  IonSelectOption,
-  IonDatetimeButton,
-  IonModal,
-} from '@ionic/vue';
 
-const bookingStore = useBookingStore();
-const roomSelectionStore = useRoomSelectionStore();
-const { guest, booking } = bookingStore;
-const router = useRouter();
-const editMode = ref(false);
-const minDate = ref(new Date().toISOString().split('T')[0]); 
-const selectedRoomId = ref(booking.room?.id);
-const availableRooms = ref([] as Room[]);
+  // We tried using the compositional API here just to see how it works :)
 
-const { minEndDate, onStartDateChange, onEndDateChange } = useDateChange();
+  import { useBookingStore } from '../stores/useBookingStore';
+  import { useRoomSelectionStore, Room } from '../stores/useRoomSelectionStore';
+  import { ref, onMounted, watch } from 'vue';
+  import { useDateChange } from '../composables/useDateChange';
+  import { useRouter } from 'vue-router';
+  import BackButton from '../components/BackButton.vue';
+  import {
+    IonPage,
+    IonList,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButton,
+    IonContent,
+    IonItem,
+    IonLabel,
+    IonInput,
+    IonToggle,
+    IonCard,
+    IonCardHeader,
+    IonCardTitle,
+    IonCardContent,
+    IonSelect,
+    IonSelectOption,
+    IonDatetimeButton,
+    IonModal,
+    IonDatetime
+  } from '@ionic/vue';
 
-const updateBooking = async () => {
-  try {
-    const guestId = await bookingStore.submitGuest();
-    await bookingStore.submitBooking(guestId);
-    router.push('/confirmation');
-  } catch (error) {
-    console.error('There was an error updating the booking!', error);
-  }
-};
+  const bookingStore = useBookingStore();
+  const roomSelectionStore = useRoomSelectionStore();
+  const { guest, booking } = bookingStore;
+  const router = useRouter();
+  const editMode = ref(false);
+  const minDate = ref(new Date().toISOString().split('T')[0]); 
+  const selectedRoomId = ref(booking.room?.id);
+  const availableRooms = ref([] as Room[]);
 
-const fetchAllRooms = async () => {
-  let fetchMore = true;
-  availableRooms.value = [];
-  roomSelectionStore.page = 0;
+  const { minEndDate, onStartDateChange, onEndDateChange } = useDateChange();
 
-  while (fetchMore) {
-    await roomSelectionStore.fetchRooms();
-    if (roomSelectionStore.rooms.length > 0) {
-      availableRooms.value = [...availableRooms.value, ...roomSelectionStore.rooms];
-      fetchMore = roomSelectionStore.rooms.length === roomSelectionStore.size;
-      roomSelectionStore.page += 1;
-    } else {
-      fetchMore = false;
+  const updateBooking = async () => {
+    try {
+      await bookingStore.submitGuest();
+      const bookingId = await bookingStore.submitBooking();
+      router.push(`/bookings/${bookingId}`);
+    } catch (error) {
+      console.error('There was an error updating the booking!', error);
     }
-  }
-};
+  };
 
-watch(selectedRoomId, (newRoomId) => {
-  if (newRoomId !== undefined) {
-    booking.room = availableRooms.value.find(room => room.id === newRoomId) || null;
-  }
-});
+  const fetchAllRooms = async () => {
+    let fetchMore = true;
+    availableRooms.value = [];
+    roomSelectionStore.page = 0;
+
+    while (fetchMore) {
+      await roomSelectionStore.fetchRooms();
+      if (roomSelectionStore.rooms.length > 0) {
+        availableRooms.value = [...availableRooms.value, ...roomSelectionStore.rooms];
+        fetchMore = roomSelectionStore.rooms.length === roomSelectionStore.size;
+        roomSelectionStore.page += 1;
+      } else {
+        fetchMore = false;
+      }
+    }
+  };
+
+  watch(selectedRoomId, (newRoomId) => {
+    if (newRoomId !== undefined) {
+      booking.room = availableRooms.value.find(room => room.id === newRoomId) || null;
+    }
+  });
 
 
-watch(() => roomSelectionStore.endDate, (newEndDate) => {
-  booking.endDate = newEndDate;
-});
+  watch(() => roomSelectionStore.endDate, (newEndDate) => {
+    booking.endDate = newEndDate;
+  });
 
 
-watch(() => roomSelectionStore.startDate, (newStartDate) => {
-  booking.startDate = newStartDate;
-});
+  watch(() => roomSelectionStore.startDate, (newStartDate) => {
+    booking.startDate = newStartDate;
+  });
 
-onMounted(() => {
-  roomSelectionStore.resetExtras();
-  roomSelectionStore.updateStartDate(booking.startDate || minDate.value);
-  roomSelectionStore.updateEndDate(booking.endDate || minDate.value);
-  fetchAllRooms();
-});
+  onMounted(() => {
+    roomSelectionStore.resetExtras();
+    roomSelectionStore.updateStartDate(booking.startDate || minDate.value);
+    roomSelectionStore.updateEndDate(booking.endDate || minDate.value);
+    fetchAllRooms();
+  });
 </script>
 

@@ -3,7 +3,7 @@ import App from './App.vue';
 import { IonicVue } from '@ionic/vue';
 import { createPinia } from 'pinia';
 import router from './router';
-import './assets/style.css';
+import './assets/globals.css';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
@@ -41,8 +41,8 @@ const app = createApp(App)
 
 const pinia = createPinia();
 
-  router.isReady().then(() => {
-    app.use(pinia);
-    app.mount('#app');
-  });
-  
+router.isReady().then(() => {
+  app.use(pinia);
+  app.mount('#app');
+});
+

@@ -67,13 +67,13 @@ export default defineComponent({
     setup() {
         const router = useRouter();
         const goToRooms = () => {
-            router.push({ name: 'Rooms' }).catch(err => console.error('Navigation error: ', err));
+            router.push({ name: 'RoomSelectionPage' }).catch(err => console.error('Navigation error: ', err));
         };
         const goToImpressum = () => {
-            router.push({ name: 'Impressum' }).catch(err => console.error('Impressum error: ', err));
+            router.push({ name: 'ImpressumPage' }).catch(err => console.error('Impressum error: ', err));
         };
         const goToAbout = () => {
-            router.push({ name: 'About' }).catch(err => console.error('About error: ', err));
+            router.push({ name: 'AboutPage' }).catch(err => console.error('About error: ', err));
         };
         return { goToRooms, goToImpressum, goToAbout };
     }

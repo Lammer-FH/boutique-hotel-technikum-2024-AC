@@ -1,12 +1,10 @@
-// src/composables/useDateChange.ts
 import { ref } from 'vue';
 import { useRoomSelectionStore } from '../stores/useRoomSelectionStore';
-import { formatDate } from '../utils/dateUtils'; 
+import { formatDate } from '../utils/dateUtils';
 
 export function useDateChange() {
   const roomSelectionStore = useRoomSelectionStore();
   const minEndDate = ref('');
-  const today = new Date();
 
   const onStartDateChange = (event: CustomEvent) => {
     const target = event.target as HTMLIonDatetimeElement;

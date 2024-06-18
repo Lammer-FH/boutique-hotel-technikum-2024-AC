@@ -6,6 +6,8 @@ import org.technikum.backend.repository.BookingRepository;
 import org.technikum.backend.dto.BookingDTO;
 import org.technikum.backend.model.Booking;
 
+import java.util.Optional;
+
 @Service
 public class BookingService {
 
@@ -24,4 +26,8 @@ public class BookingService {
         }
     }
 
+    public Optional<BookingDTO> getBookingById(int id) {
+        Optional<Booking> booking = bookingRepository.findById(id);
+        return booking.map(BookingMapper::toDto);
+    }
 }

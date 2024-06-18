@@ -41,7 +41,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
-import { IonHeader, IonPage, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonFooter } from '@ionic/vue';
+import { IonHeader, IonPage, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonFooter, IonButtons, IonButton } from '@ionic/vue';
 import BackButton from '../components/BackButton.vue';
 
 export default defineComponent({
@@ -54,13 +54,15 @@ export default defineComponent({
         IonCard,
         IonCardContent,
         IonFooter,
-        BackButton
+        BackButton,
+        IonButtons,
+        IonButton
     },
-    name: 'Impressum',
+    name: 'ImpressumPage',
     setup() {
         const router = useRouter();
         const goToAbout = () => {
-            router.push({ name: 'About' });
+            router.push({ name: 'AboutPage' });
         }
         return { goToAbout };
     }
