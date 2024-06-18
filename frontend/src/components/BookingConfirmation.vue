@@ -4,7 +4,7 @@
         <ion-toolbar class="header-and-footer">
           <ion-title>Booking (ID: {{ bookingId }})</ion-title>
         </ion-toolbar>
-        <Breadcrumb />
+        <BackButton />
       </ion-header>
       <ion-content class="ion-padding">
         <div class="container">
@@ -12,6 +12,12 @@
             Loading the Booking...
           </div>
           <div v-else>
+
+            <div class="heading-container">
+              <h1>Your booking was successful!</h1>
+              <ion-button class="custom-button" @click="print">Print</ion-button>
+            </div>
+
             <!-- Summary -->
             <ion-card>
               <ion-card-header>
@@ -27,7 +33,7 @@
               </ion-card-content>
             </ion-card>
 
-            <div v-if="store.booking.room">
+            <div v-if="store.booking.room" class="room-container">
               <RoomCard :room="store.booking.room" />
             </div>
 
@@ -59,8 +65,8 @@
   
 <script lang="ts">
   import { useBookingStore } from '../stores/useBookingStore';
-  import Breadcrumb from '../components/Breadcrumb.vue';
   import GoogleMaps from '../components/GoogleMaps.vue';
+  import BackButton from '../components/BackButton.vue';
   import RoomCard from './RoomCard.vue';
   import {
     IonPage,
@@ -71,14 +77,14 @@
     IonCard,
     IonCardHeader,
     IonCardContent,
-    IonCardTitle
+    IonCardTitle,
+    IonButton,
   } from '@ionic/vue';
   import { useRoute } from 'vue-router';
   import { onMounted } from 'vue';
 
   export default {
     components: {
-      Breadcrumb,
       GoogleMaps,
       RoomCard,
       IonPage,
@@ -89,7 +95,9 @@
       IonCard,
       IonCardHeader,
       IonCardContent,
-      IonCardTitle
+      IonCardTitle,
+      IonButton,
+      BackButton
     },
     setup: () => {
       const route = useRoute();
@@ -103,6 +111,11 @@
       
       return { store, bookingId };
     },
+    methods: {
+      print() {
+        window.print();
+      }
+    }
   }
 </script>
   
@@ -110,6 +123,25 @@
     .container {
       max-width: 800px;
       margin: 0 auto 0 auto;
+    }
+
+    .heading-container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .heading-container h1 {
+      flex-grow: 1;
+      margin: 0;
+    }
+
+    .room-container {
+      padding: 10px;
     }
   </style>
   
