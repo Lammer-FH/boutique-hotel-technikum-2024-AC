@@ -10,18 +10,23 @@
 </template>
 
 <script lang="ts">
-export default {
-  props: {
-    room: {
-      type: Object,
-      required: true
+  import { IonButton } from '@ionic/vue';
+
+  export default {
+    components: {
+      IonButton
     },
-    onClick: {
-      type: Function,
-      required: false,
-    }
-  },
-}
+    props: {
+      room: {
+        type: Object,
+        required: true
+      },
+      onClick: {
+        type: Function,
+        required: false,
+      }
+    },
+  }
 </script>
 
 <style scoped>

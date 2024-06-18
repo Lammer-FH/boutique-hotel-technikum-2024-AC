@@ -4,7 +4,7 @@
             <ion-toolbar class="header-and-footer">
                 <ion-title>About</ion-title>
             </ion-toolbar>
-            <Breadcrumb />
+            <BackButton />
         </ion-header>
 
         <ion-content :fullscreen="true" class="ion-padding">
@@ -39,8 +39,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
-import { IonHeader, IonPage, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonFooter } from '@ionic/vue';
-import Breadcrumb from '../components/BackButton.vue';
+import { IonHeader, IonPage, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonFooter, IonButton, IonButtons } from '@ionic/vue';
+import BackButton from '../components/BackButton.vue';
 
 export default defineComponent({
     components: {
@@ -52,13 +52,15 @@ export default defineComponent({
         IonCard,
         IonCardContent,
         IonFooter,
-        Breadcrumb
+        BackButton,
+        IonButton,
+        IonButtons
     },
-    name: 'About',
+    name: 'AboutPage',
     setup () {
         const router = useRouter();
         const goToImpressum = () => {
-            router.push({ name: 'Impressum' });
+            router.push({ name: 'ImpressumPage' });
         }
         return { goToImpressum };
     }

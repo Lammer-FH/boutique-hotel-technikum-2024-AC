@@ -34,16 +34,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
-import { useRoomSelectionStore } from '../stores/useRoomSelectionStore';
-import CustomSelect from '../components/CustomSelect.vue';
-import RoomCard from '../components/RoomCard.vue';
-import { IonDatetimeButton, IonModal, IonDatetime, IonButton } from '@ionic/vue';
-import { useDateChange } from '../composables/useDateChange';
-import { formatDate } from '@/utils/dateUtils';
-export default defineComponent({
-  components: {
+  import { defineComponent, onMounted, ref, watch } from 'vue';
+  import { useRouter } from 'vue-router';
+  import { useRoomSelectionStore } from '../stores/useRoomSelectionStore';
+  import CustomSelect from '../components/CustomSelect.vue';
+  import RoomCard from '../components/RoomCard.vue';
+  import { IonDatetimeButton, IonModal, IonDatetime, IonButton } from '@ionic/vue';
+  import { useDateChange } from '../composables/useDateChange';
+  import { formatDate } from '@/utils/dateUtils';
+  export default defineComponent({
+    components: {
     CustomSelect,
     IonDatetimeButton,
     IonModal,
@@ -82,7 +82,7 @@ export default defineComponent({
       }
 
       router.push({
-        name: 'BookingForm',
+        name: 'BookingPage',
         query: {
           roomId: roomId.toString(),
           startDate: formattedStartDate,

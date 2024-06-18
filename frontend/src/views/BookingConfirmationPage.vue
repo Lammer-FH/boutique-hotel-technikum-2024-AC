@@ -67,7 +67,7 @@
   import { useBookingStore } from '../stores/useBookingStore';
   import GoogleMaps from '../components/GoogleMaps.vue';
   import BackButton from '../components/BackButton.vue';
-  import RoomCard from './RoomCard.vue';
+  import RoomCard from '../components/RoomCard.vue';
   import {
     IonPage,
     IonHeader,
@@ -119,29 +119,29 @@
   }
 </script>
   
-  <style scoped>
-    .container {
-      max-width: 800px;
-      margin: 0 auto 0 auto;
-    }
+<style scoped>
+  .container {
+    max-width: 800px;
+    margin: 0 auto 0 auto;
+  }
 
-    .heading-container {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      margin-bottom: 2rem;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
+  .heading-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
 
-    .heading-container h1 {
-      flex-grow: 1;
-      margin: 0;
-    }
+  .heading-container h1 {
+    flex-grow: 1;
+    margin: 0;
+  }
 
-    .room-container {
-      padding: 10px;
-    }
-  </style>
+  .room-container {
+    padding: 10px;
+  }
+</style>
   
