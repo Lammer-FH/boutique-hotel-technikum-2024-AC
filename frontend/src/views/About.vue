@@ -40,7 +40,7 @@
 import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
 import { IonHeader, IonPage, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonFooter } from '@ionic/vue';
-import Breadcrumb from '../components/Breadcrumb.vue';
+import Breadcrumb from '../components/BackButton.vue';
 
 export default defineComponent({
     components: {

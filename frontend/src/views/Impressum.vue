@@ -4,7 +4,7 @@
             <ion-toolbar class="header-and-footer">
                 <ion-title>Impressum</ion-title>
             </ion-toolbar>
-            <Breadcrumb />
+            <BackButton />
         </ion-header>
 
         <ion-content :fullscreen="true" class="ion-padding">
@@ -42,7 +42,7 @@
 import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
 import { IonHeader, IonPage, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonFooter } from '@ionic/vue';
-import Breadcrumb from '../components/Breadcrumb.vue';
+import BackButton from '../components/BackButton.vue';
 
 export default defineComponent({
     components: {
@@ -54,7 +54,7 @@ export default defineComponent({
         IonCard,
         IonCardContent,
         IonFooter,
-        Breadcrumb
+        BackButton
     },
     name: 'Impressum',
     setup() {

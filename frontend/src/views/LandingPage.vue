@@ -12,7 +12,8 @@
                 <h1 style="text-align: center;">Willkommen im Boutique Hotel Technikum</h1>
 
                 <ion-card class="card-content">
-                    <ion-card-content class="card-content" style="background-color:#f7f3e9;">Erleben Sie Luxus und Komfort in unserem
+                    <ion-card-content class="card-content" style="background-color:#f7f3e9;">Erleben Sie Luxus und
+                        Komfort in unserem
                         exklusiven Hotel am Strand. Ob für einen
                         romantischen Kurzurlaub, einen Familienurlaub oder eine Geschäftsreise, unser Hotel bietet die
                         perfekte Unterkunft für jeden Anlass.</ion-card-content>
@@ -25,10 +26,10 @@
                     </ion-card-content>
                 </ion-card>
                 <div class="button-container">
-                     <ion-button class="custom-button position-button" expand="block" @click="goToRooms">Book
-                    now!</ion-button>   
+                    <ion-button class="custom-button position-button" expand="block" @click="goToRooms">Book
+                        now!</ion-button>
                 </div>
-            
+
             </div>
         </ion-content>
 
@@ -47,7 +48,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
-import { IonHeader, IonPage, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonButton, IonFooter } from '@ionic/vue';
+import { IonHeader, IonPage, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonButton, IonButtons, IonFooter } from '@ionic/vue';
 
 export default defineComponent({
     components: {
@@ -59,21 +60,22 @@ export default defineComponent({
         IonCard,
         IonCardContent,
         IonButton,
+        IonButtons,
         IonFooter
     },
     name: 'LandingPage',
     setup() {
         const router = useRouter();
         const goToRooms = () => {
-            router.push({ name: 'Rooms' });
+            router.push({ name: 'Rooms' }).catch(err => console.error('Navigation error: ', err));
         };
         const goToImpressum = () => {
-            router.push({ name: 'Impressum'})
+            router.push({ name: 'Impressum' }).catch(err => console.error('Impressum error: ', err));
         };
         const goToAbout = () => {
-            router.push({ name: 'About' });
+            router.push({ name: 'About' }).catch(err => console.error('About error: ', err));
         };
-        return { goToRooms, goToImpressum, goToAbout};
+        return { goToRooms, goToImpressum, goToAbout };
     }
 });
 </script>
@@ -92,11 +94,12 @@ export default defineComponent({
 }
 
 .card-content {
-     white-space: normal;
+    white-space: normal;
     overflow: hidden;
     overflow-y: auto;
     text-overflow: ellipsis;
 }
+
 .hotel-image {
     width: 100%;
     max-width: 600px;
@@ -152,6 +155,4 @@ ion-card {
 ion-button {
     margin-top: 20px;
 }
-
-
 </style>
