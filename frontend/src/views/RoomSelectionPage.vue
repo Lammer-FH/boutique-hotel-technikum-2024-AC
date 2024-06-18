@@ -20,10 +20,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import BackButton from '../components/BackButton.vue';
-import RoomSelection from '../components/RoomSelection.vue';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonFooter } from '@ionic/vue';
+import { defineComponent } from "vue";
+import BackButton from "../components/BackButton.vue";
+import RoomSelection from "../components/RoomSelection.vue";
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonPage,
+  IonFooter,
+} from "@ionic/vue";
 
 export default defineComponent({
   components: {
@@ -34,9 +41,9 @@ export default defineComponent({
     IonTitle,
     IonContent,
     IonPage,
-    IonFooter
+    IonFooter,
   },
-  name: 'RoomSelectionPage',
+  name: "RoomSelectionPage",
 });
 </script>
 

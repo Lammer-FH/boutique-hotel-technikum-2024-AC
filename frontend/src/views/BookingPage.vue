@@ -39,7 +39,14 @@
             <ion-label>Breakfast</ion-label>
             <ion-toggle v-model="booking.breakfast"></ion-toggle>
           </ion-item>
-          <ion-button expand="full" type="submit" Submit color="secondary" class="custom-button">Next</ion-button>
+          <ion-button
+            expand="full"
+            type="submit"
+            Submit
+            color="secondary"
+            class="custom-button"
+            >Next</ion-button
+          >
         </form>
       </ion-list>
     </ion-content>
@@ -47,11 +54,30 @@
 </template>
 
 <script lang="ts">
-  import { useBookingStore } from '../stores/useBookingStore';
-  import BackButton from '../components/BackButton.vue';
-  import { useRouter, useRoute } from 'vue-router';
-  import { ref, onMounted } from 'vue';
-  import {
+import { useBookingStore } from "../stores/useBookingStore";
+import BackButton from "../components/BackButton.vue";
+import { useRouter, useRoute } from "vue-router";
+import { ref, onMounted } from "vue";
+import {
+  IonPage,
+  IonList,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButton,
+  IonContent,
+  IonItem,
+  IonLabel,
+  IonInput,
+  IonToggle,
+  IonCardTitle,
+  IonCardHeader,
+  IonCardContent,
+  IonCard,
+} from "@ionic/vue";
+
+export default {
+  components: {
     IonPage,
     IonList,
     IonHeader,
@@ -66,62 +92,51 @@
     IonCardTitle,
     IonCardHeader,
     IonCardContent,
-    IonCard
-  } from '@ionic/vue';
+    IonCard,
+    BackButton,
+  },
+  setup() {
+    const bookingStore = useBookingStore();
+    const { guest, booking } = bookingStore;
+    const confirmEmail = ref("");
+    const router = useRouter();
+    const route = useRoute();
 
-  export default {
-    components: {
-      IonPage,
-      IonList,
-      IonHeader,
-      IonToolbar,
-      IonTitle,
-      IonButton,
-      IonContent,
-      IonItem,
-      IonLabel,
-      IonInput,
-      IonToggle,
-      IonCardTitle,
-      IonCardHeader,
-      IonCardContent,
-      IonCard,
-      BackButton
-    },
-    setup() {
-      const bookingStore = useBookingStore();
-      const { guest, booking } = bookingStore;
-      const confirmEmail = ref('');
-      const router = useRouter();
-      const route = useRoute();
+    onMounted(() => {
+      const roomId = route.query.roomId as string;
+      const startDate = route.query.startDate as string;
+      const endDate = route.query.endDate as string;
 
-      onMounted(() => {
-        const roomId = route.query.roomId as string;
-        const startDate = route.query.startDate as string;
-        const endDate = route.query.endDate as string;
+      if (roomId) {
+        booking.room = {
+          id: parseInt(roomId),
+          title: "",
+          description: "",
+          guestCapacity: 0,
+          sizeSqm: 0,
+        };
+      }
+      if (startDate) {
+        booking.startDate = startDate;
+      }
+      if (endDate) {
+        booking.endDate = endDate;
+      }
+    });
 
-        if (roomId) {
-          booking.room = { id: parseInt(roomId), title: '', description: '', guestCapacity: 0, sizeSqm: 0 };
-        }
-        if (startDate) {
-          booking.startDate = startDate;
-        }
-        if (endDate) {
-          booking.endDate = endDate;
-        }
-      });
-
-      const navigateToReview = () => {
-        if (guest.email.trim().toLowerCase() !== confirmEmail.value.trim().toLowerCase()) {
-          alert('Email addresses do not match.');
-          return;
-        }
-
-        router.push('/bookingreview');
+    const navigateToReview = () => {
+      if (
+        guest.email.trim().toLowerCase() !==
+        confirmEmail.value.trim().toLowerCase()
+      ) {
+        alert("Email addresses do not match.");
+        return;
       }
 
-      return { guest, booking, confirmEmail, router, navigateToReview };
-    }
-  }
+      router.push("/bookingreview");
+    };
 
+    return { guest, booking, confirmEmail, router, navigateToReview };
+  },
+};
 </script>
