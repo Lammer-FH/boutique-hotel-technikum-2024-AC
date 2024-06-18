@@ -11,27 +11,33 @@
                 <img src="@/assets/logo.png" alt="Technikum Booking Logo" class="hotel-image" />
                 <h1 style="text-align: center;">Willkommen im Boutique Hotel Technikum</h1>
 
-                <ion-card>
-                    <ion-card-content style="background-color:#f7f3e9;">Erleben Sie Luxus und Komfort in unserem
+                <ion-card class="card-content">
+                    <ion-card-content class="card-content" style="background-color:#f7f3e9;">Erleben Sie Luxus und Komfort in unserem
                         exklusiven Hotel am Strand. Ob für einen
                         romantischen Kurzurlaub, einen Familienurlaub oder eine Geschäftsreise, unser Hotel bietet die
                         perfekte Unterkunft für jeden Anlass.</ion-card-content>
                 </ion-card>
                 <h2>Erleben Sie einen unvergesslichen Aufenthalt</h2>
 
-                <ion-card>
+                <ion-card class="card-content">
                     <ion-card-content style="background-color:#f7f3e9;">
                         Genießen sie den Komfort und die Annehmlichkeiten unserer erstklassigen Zimmer und Suiten.
                     </ion-card-content>
                 </ion-card>
-                <ion-button class="custom-button position-button" expand="block" @click="goToRooms">Book
-                    now!</ion-button>
+                <div class="button-container">
+                     <ion-button class="custom-button position-button" expand="block" @click="goToRooms">Book
+                    now!</ion-button>   
+                </div>
+            
             </div>
         </ion-content>
 
         <ion-footer>
             <ion-toolbar class="header-and-footer">
-                <ion-title>Impressum</ion-title>
+                <ion-buttons slot="end">
+                    <ion-button @click="goToImpressum">Impressum</ion-button>
+                    <ion-button @click="goToAbout">About</ion-button>
+                </ion-buttons>
             </ion-toolbar>
         </ion-footer>
 
@@ -61,7 +67,13 @@ export default defineComponent({
         const goToRooms = () => {
             router.push({ name: 'Rooms' });
         };
-        return { goToRooms };
+        const goToImpressum = () => {
+            router.push({ name: 'Impressum'})
+        };
+        const goToAbout = () => {
+            router.push({ name: 'About' });
+        };
+        return { goToRooms, goToImpressum, goToAbout};
     }
 });
 </script>
@@ -70,14 +82,21 @@ export default defineComponent({
 .container {
     display: flex;
     flex-direction: column;
-    justify-content: left;
+    justify-content: space-between;
     align-items: center;
     text-align: left;
     padding: 16px;
     height: 100%;
     background-color: #f7f3e9;
+    box-sizing: border-box;
 }
 
+.card-content {
+     white-space: normal;
+    overflow: hidden;
+    overflow-y: auto;
+    text-overflow: ellipsis;
+}
 .hotel-image {
     width: 100%;
     max-width: 600px;
@@ -99,6 +118,14 @@ export default defineComponent({
     --color: #ffffff;
 }
 
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 20px 0;
+}
+
 .position-button {
     margin-top: 10px;
 }
@@ -117,16 +144,14 @@ h2 {
 
 ion-card {
     margin: 20px 0;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 ion-button {
     margin-top: 20px;
 }
 
-ion-footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    z-index: 10;
-}
+
 </style>
