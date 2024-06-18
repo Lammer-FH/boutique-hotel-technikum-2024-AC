@@ -4,7 +4,7 @@
       <ion-toolbar class="header-and-footer">
         <ion-title>Book a Room</ion-title>
       </ion-toolbar>
-      <Breadcrumb />
+      <BackButton />
     </ion-header>
     <ion-content class="ion-padding">
       <ion-card>
@@ -53,7 +53,7 @@
 
 <script setup lang="ts">
 import { useBookingStore } from '../stores/useBookingStore';
-import Breadcrumb from '../components/Breadcrumb.vue';
+import BackButton from './BackButton.vue';
 import { useRouter, useRoute } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import {
