@@ -4,7 +4,7 @@
       <ion-toolbar class="header-and-footer">
         <ion-title>Room Selection Page</ion-title>
       </ion-toolbar>
-      <Breadcrumb />
+      <BackButton />
     </ion-header>
 
     <ion-content :fullscreen="true" class="ion-padding">
@@ -21,13 +21,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Breadcrumb from '../components/Breadcrumb.vue';
+import BackButton from '../components/BackButton.vue';
 import RoomSelection from '../components/RoomSelection.vue';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonFooter } from '@ionic/vue';
 
 export default defineComponent({
   components: {
-    Breadcrumb,
+    BackButton,
     RoomSelection,
     IonHeader,
     IonToolbar,

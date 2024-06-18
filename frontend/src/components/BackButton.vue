@@ -9,7 +9,7 @@
 <script>
 import { IonToolbar, IonButtons, IonBackButton } from '@ionic/vue';
 export default {
-    name: 'Breadcrumb',
+    name: 'BackButton',
     components: {
         IonToolbar,
         IonButtons,
