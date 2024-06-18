@@ -5,6 +5,5 @@
 </template>
 
 <script setup lang="ts">
-import { IonApp } from '@ionic/vue';
-import LandingPage from './views/LandingPage.vue';
+import { IonApp } from "@ionic/vue";
 </script>

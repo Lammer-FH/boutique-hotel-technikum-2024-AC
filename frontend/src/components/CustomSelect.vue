@@ -4,7 +4,7 @@
     <div class="custom-select">
       <div class="selected-option" @click="toggleDropdown">
         <span v-if="!selectedOptions.length">Select Options</span>
-        <span v-else>{{ selectedOptions.join(', ') }}</span>
+        <span v-else>{{ selectedOptions.join(", ") }}</span>
       </div>
       <div class="dropdown-options" v-if="dropdownOpen">
         <div
@@ -22,23 +22,27 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, onUnmounted } from 'vue';
-import { IonLabel } from '@ionic/vue';
+import { defineComponent, ref, onMounted, onUnmounted } from "vue";
+import { IonLabel } from "@ionic/vue";
 
 export default defineComponent({
-  name: 'CustomSelect',
+  name: "CustomSelect",
   components: {
     IonLabel,
   },
-  emits: ['updateExtras'],
+  emits: ["updateExtras"],
   setup(_, { emit }) {
     const dropdownOpen = ref(false);
     const selectedOptions = ref<string[]>([]);
     const options = ref([
-      { value: 'Balcony', text: 'Balcony', iconClass: 'bi bi-house' },
-      { value: 'Air Conditioning', text: 'Air Conditioning', iconClass: 'bi bi-snow' },
-      { value: 'Bathroom', text: 'Bathroom', iconClass: 'bi bi-droplet' },
-      { value: 'Whirlpool', text: 'Whirlpool', iconClass: 'bi bi-star' },
+      { value: "Balcony", text: "Balcony", iconClass: "bi bi-house" },
+      {
+        value: "Air Conditioning",
+        text: "Air Conditioning",
+        iconClass: "bi bi-snow",
+      },
+      { value: "Bathroom", text: "Bathroom", iconClass: "bi bi-droplet" },
+      { value: "Whirlpool", text: "Whirlpool", iconClass: "bi bi-star" },
     ]);
 
     const toggleDropdown = () => {
@@ -47,18 +51,20 @@ export default defineComponent({
 
     const selectOption = (option: { value: string; text: string }) => {
       if (selectedOptions.value.includes(option.text)) {
-        selectedOptions.value = selectedOptions.value.filter(opt => opt !== option.text);
+        selectedOptions.value = selectedOptions.value.filter(
+          (opt) => opt !== option.text,
+        );
       } else {
         selectedOptions.value.push(option.text);
       }
-      emit('updateExtras', selectedOptions.value);
+      emit("updateExtras", selectedOptions.value);
     };
 
     // Close dropdown when clicking outside the component
     const clickOutsideHandler = (event: MouseEvent) => {
       if (dropdownOpen.value) {
         const target = event.target as HTMLElement;
-        if (!target.closest('.custom-select')) {
+        if (!target.closest(".custom-select")) {
           dropdownOpen.value = false;
         }
       }
@@ -66,15 +72,21 @@ export default defineComponent({
 
     // Add click event listener on component mount
     onMounted(() => {
-      document.addEventListener('click', clickOutsideHandler);
+      document.addEventListener("click", clickOutsideHandler);
     });
 
     // Remove click event listener on component unmount
     onUnmounted(() => {
-      document.removeEventListener('click', clickOutsideHandler);
+      document.removeEventListener("click", clickOutsideHandler);
     });
 
-    return { dropdownOpen, selectedOptions, options, toggleDropdown, selectOption };
+    return {
+      dropdownOpen,
+      selectedOptions,
+      options,
+      toggleDropdown,
+      selectOption,
+    };
   },
 });
 </script>

@@ -1,20 +1,20 @@
 <template>
-    <ion-toolbar class = "breadcrumb-toolbar">
-        <ion-buttons slot="start">
-            <ion-back-button defaultHref="/" text="Back"></ion-back-button>
-        </ion-buttons>
-    </ion-toolbar>
+  <ion-toolbar class="breadcrumb-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/" text="Back"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
 </template>
 
 <script>
-import { IonToolbar, IonButtons, IonBackButton } from '@ionic/vue';
+import { IonToolbar, IonButtons, IonBackButton } from "@ionic/vue";
 export default {
-    name: 'BackButton',
-    components: {
-        IonToolbar,
-        IonButtons,
-        IonBackButton,
-    },
+  name: "BackButton",
+  components: {
+    IonToolbar,
+    IonButtons,
+    IonBackButton,
+  },
 };
 </script>
 
@@ -27,5 +27,4 @@ export default {
 ion-back-button {
   --color: #000000;
 }
-
 </style>
