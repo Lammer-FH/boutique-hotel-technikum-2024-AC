@@ -4,9 +4,9 @@
       <ion-toolbar class="header-and-footer">
         <ion-title>Review Your Booking</ion-title>
       </ion-toolbar>
+      <BackButton />
     </ion-header>
     <ion-content class="ion-padding">
-      <!-- Summary Section -->
       <ion-card>
         <ion-card-header>
           <ion-card-title>Your Booking Summary</ion-card-title>
@@ -22,8 +22,6 @@
           <ion-button expand="full" @click="editMode = true" color="secondary" class="custom-button">Edit Booking</ion-button>
         </ion-card-content>
       </ion-card>
-
-      <!-- Edit Section -->
       <ion-list class="form-list" v-if="editMode">
         <form @submit.prevent="updateBooking">
           <ion-item class="date-picker">
@@ -71,8 +69,6 @@
           <ion-button expand="full" type="submit" color="secondary" class="custom-button" @click="editMode = false">Save Changes</ion-button>
         </form>
       </ion-list>
-
-      <!-- Always Visible Update Button -->
       <ion-button expand="full" v-if="!editMode" @click="updateBooking" color="primary" class="custom-button">Submit Booking</ion-button>
     </ion-content>
   </ion-page>
@@ -84,6 +80,7 @@ import { useRoomSelectionStore, Room } from '../stores/useRoomSelectionStore';
 import { ref, onMounted, watch } from 'vue';
 import { useDateChange } from '../composables/useDateChange';
 import { useRouter } from 'vue-router';
+import BackButton from '../components/BackButton.vue';
 import {
   IonPage,
   IonList,
@@ -111,7 +108,7 @@ const roomSelectionStore = useRoomSelectionStore();
 const { guest, booking } = bookingStore;
 const router = useRouter();
 const editMode = ref(false);
-const minDate = ref(new Date().toISOString().split('T')[0]); // Today's date as a reactive ref
+const minDate = ref(new Date().toISOString().split('T')[0]); 
 const selectedRoomId = ref(booking.room?.id);
 const availableRooms = ref([] as Room[]);
 
@@ -150,12 +147,12 @@ watch(selectedRoomId, (newRoomId) => {
   }
 });
 
-// Watch for changes in endDate in the roomSelectionStore and update local endDate
+
 watch(() => roomSelectionStore.endDate, (newEndDate) => {
   booking.endDate = newEndDate;
 });
 
-// Watch for changes in startDate in the roomSelectionStore and update local startDate
+
 watch(() => roomSelectionStore.startDate, (newStartDate) => {
   booking.startDate = newStartDate;
 });

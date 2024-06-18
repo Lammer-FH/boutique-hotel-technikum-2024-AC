@@ -43,11 +43,6 @@
         </form>
       </ion-list>
     </ion-content>
-    <ion-footer>
-      <ion-toolbar class="header-and-footer">
-        <ion-title>Impressum</ion-title>
-      </ion-toolbar>    
-    </ion-footer>
   </ion-page>
 </template>
 
@@ -68,8 +63,10 @@ import {
   IonLabel,
   IonInput,
   IonToggle,
-  IonDatetime,
-  IonFooter
+  IonCardTitle,
+  IonCardHeader,
+  IonCardContent,
+  IonCard
 } from '@ionic/vue';
 
 const bookingStore = useBookingStore();
@@ -103,7 +100,3 @@ const navigateToReview = () => {
   router.push('/bookingreview');
 };
 </script>
-
-<style scoped>
-/* your styles here */
-</style>
